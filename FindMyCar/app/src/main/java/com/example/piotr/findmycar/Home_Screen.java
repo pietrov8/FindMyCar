@@ -16,11 +16,19 @@ public class Home_Screen extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home__screen);
         Button btnCamera = (Button) findViewById(R.id.Btn_camera);
-
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE));
+                Intent i = new Intent(getApplicationContext(), CameraLunch.class);
+                startActivity(i);
+            }
+        });
+
+        Button btnClose = (Button) findViewById(R.id.Btn_close);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.exit(0);
             }
         });
     }
