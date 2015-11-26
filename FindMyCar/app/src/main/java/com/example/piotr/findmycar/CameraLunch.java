@@ -1,5 +1,6 @@
 package com.example.piotr.findmycar;
 
+import android.content.pm.ActivityInfo;
 import android.hardware.Camera;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ public class CameraLunch extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_lunch);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         try{
             mCamera = Camera.open();//you can use open(int) to use different cameras
         } catch (Exception e){
