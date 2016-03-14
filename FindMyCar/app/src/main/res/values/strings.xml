@@ -6,4 +6,22 @@
     <string name="title_activity_camera">Camera</string>
     <string name="title_activity_camera_view">CameraView</string>
     <string name="title_activity_camera_lunch">CameraLunch</string>
+    <string name="title_activity_add">AddActivity</string>
+    <string name="Activity_add_title">Dodawanie znacznika</string>
+    <string name="AddAcivity_add_marker_title">Nazwa dodawananego znacznika</string>
+    <string name="AddAcivity_add_marker_text">Opis znacznika</string>
+    <string name="AddAcivity_add_marker_coordinates_title">Współrzędne geograficzne zapisywanego znacznika</string>
+    <string name="AddAcivity_add_marker">Dodaj znacznik</string>
+    <string name="AddAcivity_add_marker_false">Nie dodawaj</string>
+    <string name="Activity_edit_title">Edytowanie znacznika</string>
+    <string name="AddAcivity_edit_marker_title">Zmień nazwę</string>
+    <string name="AddAcivity_edit_marker_coordinates_title">Współrzędne geograficzne zmienanego znacznika</string>
+    <string name="AddAcivity_edit_marker_text">Zmień opis</string>
+    <string name="AddAcivity_edit_marker">Zmień dane</string>
+    <string name="AddAcivity_edit_marker_false">Nie zmieniaj danych</string>
+    <string name="open_camera">Otwórz kamerę</string>
+    <string name="list_marker">Lista znaczników</string>
+    <string name="close_text">Zamknij aplikację</string>
+    <string name="delete_text">Usuń</string>
+    <string name="edit_text">Edytuj</string>
 </resources>

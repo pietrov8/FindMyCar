@@ -16,14 +16,41 @@ public class Home_Screen extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home__screen);
         Button btnCamera = (Button) findViewById(R.id.Btn_camera);
+        Button btnAddMarker = (Button) findViewById(R.id.btn_add);
+        Button btnEditMarker = (Button) findViewById(R.id.btn_edit_marker);
+        Button btnListMarker = (Button) findViewById(R.id.btn_list_marker);
+
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), CameraLunch.class);
+                Intent i = new Intent(getApplicationContext(), CameraViewActivity.class);
                 startActivity(i);
             }
         });
 
+        btnAddMarker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), AddActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btnEditMarker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), EditActivity.class);
+                startActivity(i);
+            }
+        });
+
+        btnListMarker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), ListActivity.class);
+                startActivity(i);
+            }
+        });
         Button btnClose = (Button) findViewById(R.id.Btn_close);
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,16 +62,13 @@ public class Home_Screen extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_home__screen, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
