@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
@@ -77,6 +78,9 @@ public class ListActivity extends Activity {
                 .findViewById(R.id.list_item_string)).getText();
         View view = info.targetView;
         Integer item_number = (Integer) item.getItemId();
+        final MediaPlayer mp = MediaPlayer.create(getApplicationContext(), R.raw.trash);
+        final MediaPlayer mp2 = MediaPlayer.create(getApplicationContext(), R.raw.menu_select_1);
+
         switch (item_number) {
             case R.id.edit_btn:
                 Bundle put = new Bundle();
@@ -84,6 +88,7 @@ public class ListActivity extends Activity {
                 Intent i = new Intent(getApplicationContext(), EditActivity.class);
                 i.putExtras(put);
                 startActivity(i);
+                mp2.start();
                 break;
             case R.id.delete_btn:
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -95,6 +100,7 @@ public class ListActivity extends Activity {
                         listAdapter.remove(Integer.parseInt(String.valueOf(titulo)));
                         adapter.notifyDataSetChanged();
                         showToast();
+                        mp.start();
                     }
                 });
                 alert.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -113,6 +119,7 @@ public class ListActivity extends Activity {
                 Intent ii = new Intent(getApplicationContext(), CameraViewActivity.class);
                 ii.putExtras(put_to_camera);
                 startActivity(ii);
+                mp2.start();
                 break;
             default:
                 return super.onContextItemSelected(item);
