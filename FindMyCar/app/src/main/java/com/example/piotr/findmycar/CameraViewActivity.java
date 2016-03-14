@@ -42,6 +42,8 @@ public class CameraViewActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_camera_view);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		Bundle bundle_list = getIntent().getExtras();
+		String name_item = bundle_list.getString("name");
 
 		setupListeners();
 		setupLayout();
@@ -49,8 +51,10 @@ public class CameraViewActivity extends Activity implements
 	}
 
 	private void setAugmentedRealityPoint() {
+		Bundle bundle_list = getIntent().getExtras();
+		String name_item = bundle_list.getString("name");
 		mPoi = new AugmentedPOI(
-				"WEII",
+				name_item,
 				"Mój samochód",
 				51.23661,22.5485909
 		);

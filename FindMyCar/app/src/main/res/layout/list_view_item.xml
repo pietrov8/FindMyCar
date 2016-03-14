@@ -16,21 +16,5 @@
             android:textSize="18sp"
             android:textStyle="bold" />
     </TableRow>
-    <TableRow
-        android:id="@+id/hidden_view"
-        android:visibility="gone">
-        <Button
-            android:id="@+id/edit_btn"
-            android:layout_height="wrap_content"
-            android:text="@string/edit_text"
-            android:layout_width="0dp"
-            android:layout_weight="1"/>
-        <Button
-            android:id="@+id/delete_btn"
-            android:layout_height="wrap_content"
-            android:text="@string/delete_text"
-            android:layout_width="0dp"
-            android:layout_weight="1"/>
-    </TableRow>
 </TableLayout>
 

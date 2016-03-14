@@ -24,4 +24,11 @@
     <string name="close_text">Zamknij aplikację</string>
     <string name="delete_text">Usuń</string>
     <string name="edit_text">Edytuj</string>
+    <string name="select_text">Wybierz</string>
+    <string name="delete_marker">Usunięto znacznik</string>
+    <string name="delete_marker_error">Operacja usuwania znacznika przerwana</string>
+    <string name="delete_alert_title">Uwaga!</string>
+    <string name="delete_alert">Czy napewno chcesz usunąć znacznik?</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
 </resources>

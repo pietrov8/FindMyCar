@@ -36,13 +36,13 @@ public class Home_Screen extends ActionBarActivity {
             }
         });
 
-        btnEditMarker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), EditActivity.class);
-                startActivity(i);
-            }
-        });
+//        btnEditMarker.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(getApplicationContext(), EditActivity.class);
+//                startActivity(i);
+//            }
+//        });
 
         btnListMarker.setOnClickListener(new View.OnClickListener() {
             @Override
