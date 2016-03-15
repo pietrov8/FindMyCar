@@ -42,9 +42,6 @@ public class CameraViewActivity extends Activity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_camera_view);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		Bundle bundle_list = getIntent().getExtras();
-		String name_item = bundle_list.getString("name");
-
 		setupListeners();
 		setupLayout();
 		setAugmentedRealityPoint();
@@ -52,12 +49,23 @@ public class CameraViewActivity extends Activity implements
 
 	private void setAugmentedRealityPoint() {
 		Bundle bundle_list = getIntent().getExtras();
-		String name_item = bundle_list.getString("name");
-		mPoi = new AugmentedPOI(
-				name_item,
-				"Mój samochód",
-				51.23661,22.5485909
-		);
+		String name_item;
+		if (bundle_list !=null) {
+			name_item = bundle_list.getString("name");
+			mPoi = new AugmentedPOI(
+					name_item,
+					"Mój samochód",
+					51.23661,22.5485909
+			);
+		} else {
+			mPoi = new AugmentedPOI(
+					"Znacznik ostatnio ustawiony",
+					"Mój samochód",
+					51.23661,22.5485909
+			);
+		}
+
+
 	}
 
 	public double calculateTeoreticalAzimuth() {

@@ -121,6 +121,10 @@ public class ListActivity extends Activity {
                 startActivity(ii);
                 mp2.start();
                 break;
+            case R.id.get_marker_info:
+                Intent iii = new Intent(getApplicationContext(), MarkerInfo.class);
+                startActivity(iii);
+                mp2.start();
             default:
                 return super.onContextItemSelected(item);
         }

@@ -9,6 +9,10 @@
         android:icon="@android:drawable/ic_menu_edit"
         android:title="@string/delete_text" />
 
+    <item android:id="@+id/get_marker_info"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="@string/marker_info" />
+
     <item android:id="@+id/get_marker"
         android:icon="@android:drawable/ic_menu_save"
         android:title="@string/select_text" />

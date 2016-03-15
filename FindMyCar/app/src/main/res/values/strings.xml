@@ -31,4 +31,6 @@
     <string name="delete_alert">Czy napewno chcesz usunąć znacznik?</string>
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
+    <string name="marker_info">Szczegóły</string>
+    <string name="update_coordinates">Zaktualizuj współrzędne</string>
 </resources>
