@@ -36,6 +36,14 @@ public class ListActivity extends Activity {
         listAdapter.add("Znacznik 6");
         listAdapter.add("Znacznik 7");
         listAdapter.add("Znacznik 8");
+        listAdapter.add("Znacznik 9");
+        listAdapter.add("Znacznik 10");
+        listAdapter.add("Znacznik 11");
+        listAdapter.add("Znacznik 12");
+        listAdapter.add("Znacznik 13");
+        listAdapter.add("Znacznik 14");
+        listAdapter.add("Znacznik 15");
+        listAdapter.add("Znacznik 16");
 
         adapter = new MyCustomAdapter(listAdapter, this);
 

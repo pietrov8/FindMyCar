@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 public class AddActivity extends Activity {
+
     @Override
     public void setTitle(CharSequence title) {
         setTitle(R.string.Activity_add_title);
@@ -14,4 +15,5 @@ public class AddActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
     }
+
 }
