@@ -34,4 +34,5 @@
     <string name="marker_info">Szczegóły</string>
     <string name="update_coordinates">Zaktualizuj współrzędne</string>
     <string name="gps_disabled_message">Twój GPS jest wyłączony. Czy chcesz go włączyć?</string>
+    <string name="update_coordinates_question">Czy chcesz zaktualizować współrzędne</string>
 </resources>

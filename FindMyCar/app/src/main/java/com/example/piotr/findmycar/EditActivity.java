@@ -45,20 +45,36 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
         update_coordinates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*** CHECK GPS ***/
-                final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
-                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER )) {
-                    buildAlertMessageNoGps();
-                }
-                if (location != null) {
-                    mMyLatitude = location.getLatitude();
-                    mMyLongitude = location.getLongitude();
-                    marker_coordinates_edit.setText("" + mMyLatitude + mMyLongitude);
-                }
+                updateGPSAlert();
             }
         });
     }
 
+    public void updateGPSAlert() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.update_coordinates_question)
+                .setCancelable(false)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+                        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER )) {
+                            buildAlertMessageNoGps();
+                        }
+                        if (location != null) {
+                            mMyLatitude = location.getLatitude();
+                            mMyLongitude = location.getLongitude();
+                            marker_coordinates_edit.setText("" + mMyLatitude + mMyLongitude);
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
 
     public void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
