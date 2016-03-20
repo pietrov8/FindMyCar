@@ -70,7 +70,7 @@ public class Home_Screen extends ActionBarActivity {
         }
     }
 
-    private void buildAlertMessageNoGps() {
+    public void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.gps_disabled_message)
                 .setCancelable(false)

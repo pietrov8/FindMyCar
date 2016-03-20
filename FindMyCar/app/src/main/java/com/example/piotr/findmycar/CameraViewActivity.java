@@ -1,10 +1,19 @@
 package com.example.piotr.findmycar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -18,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CameraViewActivity extends Activity implements
-		SurfaceHolder.Callback, OnLocationChangedListener, OnAzimuthChangedListener{
+		SurfaceHolder.Callback, OnLocationChangedListener, OnAzimuthChangedListener, SensorEventListener{
 
 	private Camera mCamera;
 	private SurfaceHolder mSurfaceHolder;
@@ -30,12 +39,16 @@ public class CameraViewActivity extends Activity implements
 	private static double AZIMUTH_ACCURACY = 5;
 	private double mMyLatitude = 0;
 	private double mMyLongitude = 0;
+	private float currentDegree = 0f;
 
 	private MyCurrentAzimuth myCurrentAzimuth;
 	private MyCurrentLocation myCurrentLocation;
 
 	TextView descriptionTextView;
 	ImageView pointerIcon;
+
+	// device sensor manager
+	private SensorManager mSensorManager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +58,33 @@ public class CameraViewActivity extends Activity implements
 		setupListeners();
 		setupLayout();
 		setAugmentedRealityPoint();
+
+		// initialize your android device sensor capabilities
+		mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+		/*** CHECK GPS ***/
+		final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+		if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER )) {
+			buildAlertMessageNoGps();
+		}
+	}
+
+	public void buildAlertMessageNoGps() {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.gps_disabled_message)
+				.setCancelable(false)
+				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+					public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+						startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+					}
+				})
+				.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+					public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+						dialog.cancel();
+					}
+				});
+		final AlertDialog alert = builder.create();
+		alert.show();
 	}
 
 	private void setAugmentedRealityPoint() {
@@ -125,7 +165,7 @@ public class CameraViewActivity extends Activity implements
 	private void updateDescription() {
 		descriptionTextView.setText(mPoi.getPoiName() + " azimuthTeoretical "
 				+ mAzimuthTeoretical + " azimuthReal " + mAzimuthReal + " latitude "
-				+ mMyLatitude + " longitude " + mMyLongitude);
+				+ mMyLatitude + " longitude " + mMyLongitude + " CompassValue" + currentDegree);
 	}
 
 	@Override
@@ -160,7 +200,9 @@ public class CameraViewActivity extends Activity implements
 	protected void onStop() {
 		myCurrentAzimuth.stop();
 		myCurrentLocation.stop();
+		mSensorManager.unregisterListener(this);
 		super.onStop();
+
 	}
 
 	@Override
@@ -168,6 +210,8 @@ public class CameraViewActivity extends Activity implements
 		super.onResume();
 		myCurrentAzimuth.start();
 		myCurrentLocation.start();
+		mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
+				SensorManager.SENSOR_DELAY_GAME);
 	}
 
 	private void setupListeners() {
@@ -220,5 +264,16 @@ public class CameraViewActivity extends Activity implements
 		mCamera.release();
 		mCamera = null;
 		isCameraviewOn = false;
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		float degree = Math.round(event.values[0]);
+		currentDegree = degree;
+	}
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
 	}
 }
