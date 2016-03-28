@@ -46,6 +46,8 @@ public class CameraViewActivity extends Activity implements
 
 	TextView descriptionTextView;
 	ImageView pointerIcon;
+	ImageView arrowLeftIcon;
+	ImageView arrowRightIcon;
 
 	// device sensor manager
 	private SensorManager mSensorManager;
@@ -173,7 +175,18 @@ public class CameraViewActivity extends Activity implements
 		mMyLatitude = location.getLatitude();
 		mMyLongitude = location.getLongitude();
 		mAzimuthTeoretical = calculateTeoreticalAzimuth();
-		Toast.makeText(this,"latitude: "+location.getLatitude()+" longitude: "+location.getLongitude(), Toast.LENGTH_SHORT).show();
+
+		Location loc1 = new Location("A");
+		loc1.setLatitude(mMyLatitude);
+		loc1.setLongitude(mMyLongitude);
+
+		Location loc2 = new Location("B");
+		loc2.setLatitude(51.233171);
+		loc2.setLongitude(22.498841);
+
+		float distanceInMeters = loc1.distanceTo(loc2);
+
+		Toast.makeText(this,"Odległość: " + distanceInMeters + "m", Toast.LENGTH_SHORT).show();
 		updateDescription();
 	}
 
@@ -183,14 +196,24 @@ public class CameraViewActivity extends Activity implements
 		mAzimuthTeoretical = calculateTeoreticalAzimuth();
 
 		pointerIcon = (ImageView) findViewById(R.id.icon);
+		arrowLeftIcon = (ImageView) findViewById(R.id.icon_arrow_left);
+		arrowRightIcon = (ImageView) findViewById(R.id.icon_arrow_right);
 
 		double minAngle = calculateAzimuthAccuracy(mAzimuthTeoretical).get(0);
 		double maxAngle = calculateAzimuthAccuracy(mAzimuthTeoretical).get(1);
 
 		if (isBetween(minAngle, maxAngle, mAzimuthReal)) {
 			pointerIcon.setVisibility(View.VISIBLE);
-		} else {
+			arrowLeftIcon.setVisibility(View.INVISIBLE);
+			arrowRightIcon.setVisibility(View.INVISIBLE);
+		} else if(mAzimuthReal > mAzimuthTeoretical) {
 			pointerIcon.setVisibility(View.INVISIBLE);
+			arrowLeftIcon.setVisibility(View.VISIBLE);
+			arrowRightIcon.setVisibility(View.INVISIBLE);
+		} else if (mAzimuthReal < mAzimuthTeoretical) {
+			pointerIcon.setVisibility(View.INVISIBLE);
+			arrowLeftIcon.setVisibility(View.INVISIBLE);
+			arrowRightIcon.setVisibility(View.VISIBLE);
 		}
 
 		updateDescription();

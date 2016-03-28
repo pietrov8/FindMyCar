@@ -15,8 +15,32 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_launcher"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:contentDescription="Bullet"
+        android:src="@drawable/ic_bullet" />
+
+    <ImageView
+        android:id="@+id/icon_arrow_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="false"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="50dp"
+        android:visibility="invisible"
+        android:contentDescription="Arrow Right"
+        android:src="@drawable/ic_arrow_left" />
+
+    <ImageView
+        android:id="@+id/icon_arrow_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="false"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="50dp"
+        android:layout_centerVertical="true"
+        android:visibility="invisible"
+        android:contentDescription="Arrow Right"
+        android:src="@drawable/ic_arrow_right" />
 
     <TextView
         android:id="@+id/cameraTextView"
@@ -24,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/ic_bullet"
         android:background="#FFFFFF"
         android:text="Large Text" />
 

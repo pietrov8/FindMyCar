@@ -65,7 +65,7 @@ public class AddActivity extends Activity implements OnLocationChangedListener {
     public void onLocationChanged(Location location) {
         mMyLatitude = location.getLatitude();
         mMyLongitude = location.getLongitude();
-        descriptionTextView.setText(""+ mMyLatitude + mMyLongitude);
+        descriptionTextView.setText(""+ mMyLatitude + " " + mMyLongitude);
 
     }
     private void setupListeners() {

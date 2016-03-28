@@ -63,7 +63,7 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
                         if (location != null) {
                             mMyLatitude = location.getLatitude();
                             mMyLongitude = location.getLongitude();
-                            marker_coordinates_edit.setText("" + mMyLatitude + mMyLongitude);
+                            marker_coordinates_edit.setText("" + mMyLatitude + " " + mMyLongitude);
                         }
                     }
                 })

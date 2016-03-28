@@ -63,7 +63,7 @@ public class Home_Screen extends ActionBarActivity {
             }
         });
 
-        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER )) {
             buildAlertMessageNoGps();
