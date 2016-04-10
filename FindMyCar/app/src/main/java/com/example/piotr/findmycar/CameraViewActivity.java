@@ -29,7 +29,7 @@ import java.util.List;
 public class CameraViewActivity extends Activity implements
 		SurfaceHolder.Callback, OnLocationChangedListener, OnAzimuthChangedListener, SensorEventListener{
 
-	private Camera mCamera;
+	private Camera mCamera = null;
 	private SurfaceHolder mSurfaceHolder;
 	private boolean isCameraviewOn = false;
 	private AugmentedPOI mPoi;
