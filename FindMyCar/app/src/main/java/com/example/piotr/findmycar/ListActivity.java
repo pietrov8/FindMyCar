@@ -28,22 +28,7 @@ public class ListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        listAdapter.add("Znacznik 1");
-        listAdapter.add("Znacznik 2");
-        listAdapter.add("Znacznik 3");
-        listAdapter.add("Znacznik 4");
-        listAdapter.add("Znacznik 5");
-        listAdapter.add("Znacznik 6");
-        listAdapter.add("Znacznik 7");
-        listAdapter.add("Znacznik 8");
-        listAdapter.add("Znacznik 9");
-        listAdapter.add("Znacznik 10");
-        listAdapter.add("Znacznik 11");
-        listAdapter.add("Znacznik 12");
-        listAdapter.add("Znacznik 13");
-        listAdapter.add("Znacznik 14");
-        listAdapter.add("Znacznik 15");
-        listAdapter.add("Znacznik 16");
+
 
         adapter = new MyCustomAdapter(listAdapter, this);
 

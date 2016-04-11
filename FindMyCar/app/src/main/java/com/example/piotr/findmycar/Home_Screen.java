@@ -23,6 +23,7 @@ public class Home_Screen extends ActionBarActivity {
         Button btnAddMarker = (Button) findViewById(R.id.btn_add);
         Button btnEditMarker = (Button) findViewById(R.id.btn_edit_marker);
         Button btnListMarker = (Button) findViewById(R.id.btn_list_marker);
+        Button btntest = (Button) findViewById(R.id.btn_dbtest);
 
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +54,23 @@ public class Home_Screen extends ActionBarActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), ListActivity.class);
                 startActivity(i);
+            }
+        });
+
+        btntest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("tutaj");
+
+                /*** POBIERANIE DANYCH Z JSON W EXECUTRE ***/
+                BackgorundTask asyncTask = (BackgorundTask) new BackgorundTask(new BackgorundTask.AsyncResponse(){
+                    @Override
+                    public void processFinish(String output){
+                        System.out.println(output);
+                    }
+                }).execute("http://piotr-m.pl/piotr-m.zxy.me/findmycar/main.php?action=getAllMarkers");
+
+                
             }
         });
         Button btnClose = (Button) findViewById(R.id.Btn_close);

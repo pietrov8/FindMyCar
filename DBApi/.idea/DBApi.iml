@@ -14,5 +14,6 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="DBApi node_modules" level="project" />
   </component>
 </module>

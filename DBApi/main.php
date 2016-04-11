@@ -3,6 +3,7 @@ require_once('./controller.php');
 require_once('./classes/Model.php');
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+$action = 'getAllMarkers';
 $a = Controller::handle()->$action();
 
 try {
