@@ -15,6 +15,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 
@@ -28,6 +32,22 @@ public class ListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        BackgorundTask asyncTask = (BackgorundTask) new BackgorundTask(new BackgorundTask.AsyncResponse(){
+            @Override
+            public void processFinish(String output){
+                try {
+                    JSONArray  pages     =  new JSONArray(output);
+                    for (int i = 0; i < pages.length(); ++i) {
+                        JSONObject rec = pages.getJSONObject(i);
+                        String name_task = rec.getString("nazwa");
+                        listAdapter.add(name_task);
+                    }
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).execute("http://piotr-m.pl/piotr-m.zxy.me/findmycar/main.php?action=getAllMarkers");
 
 
         adapter = new MyCustomAdapter(listAdapter, this);
