@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class EditActivity extends Activity implements OnLocationChangedListener {
     private MyCurrentLocation myCurrentLocation;
     double mMyLatitude = 0;
@@ -36,7 +39,6 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
         update_coordinates = (Button)findViewById(R.id.update_coordinates);
         marker_coordinates_edit = (TextView) findViewById(R.id.marker_coordinates_edit);
 
-
         marker_title.setText(name_item);
 
 
@@ -48,6 +50,17 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
                 updateGPSAlert();
             }
         });
+
+        try {
+            JSONObject toSend = new JSONObject();
+            toSend.put("msg", name_item);
+
+            JSONTransmitter transmitter = new JSONTransmitter();
+            transmitter.execute(new JSONObject[] {toSend});
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateGPSAlert() {
