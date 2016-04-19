@@ -23,25 +23,29 @@ class Model {
         return DBHelper::handle()->executeQuery('SELECT * FROM uzytkownicy ORDER BY nick');
     }
 
-    public function getUserActiveMarker($user_id){
-        return DBHelper::handle()->executeQuery('SELECT * FROM znaczniki WHERE usuniety=0 AND aktywny=1 AND id_wlasciciela='. $user_id);
+    public function getUserActiveMarker($user_name){
+        return DBHelper::handle()->executeQuery('SELECT * FROM znaczniki WHERE usuniety=0 AND aktywny=1 AND nazwa_uzytkownika='. $user_name);
     }
 
     public function getUserMarkers($user_id){
         return DBHelper::handle()->executeQuery('SELECT * FROM znaczniki WHERE usuniety=0 AND id_wlasciciela='. $user_id);
     }
 
+    public function getMarkerByName($marker_name){
+        return DBHelper::handle()->executeQuery('SELECT * FROM znaczniki WHERE usuniety=0 AND nazwa='. $marker_name);
+    }
+
     public function updateMarker($marker) {
         $query = "UPDATE znaczniki SET
-                       `nazwa` = '{$marker->name}',
+                       `nazwa` = '{$marker->nazwa}',
                        `latitude` = '{$marker->latitude}',
                        `longitude` = '{$marker->longitude}',
-                       `data_utworzenia`= '{$marker->date_created}',
-                       `aktywny` = '{$marker->active}',
-                       `usuniety` = '{$marker->deleted}',
-                       `data_usuniecia` = '{$marker->date_deleted}',
-                       `id_wlasciciela` = '{$marker->user_id}',
-                  WHERE `id` = '{$marker->id}'";
+                       `data_utworzenia`= '{$marker->data_utworzenia}',
+                       `aktywny` = '{$marker->aktywny}',
+                       `usuniety` = '{$marker->usuniety}',
+                       `data_usuniecia` = '{$marker->data_usuniecia}',
+                       `id_wlasciciela` = '{$marker->id_wlasciciela}',
+                  WHERE `nazwa` = '{$marker->nazwa}'";
         return $query;
         DBHelper::handle()->executeQuery($query);
     }
@@ -49,8 +53,8 @@ class Model {
     public function saveMarker ($marker) {
         $query = "INSERT INTO bieznie (`id`, `nazwa`, `latitude`, `longitude`, `data_utworzenia`, `aktywny`, `usuniety`,
                     `data_usuniecia`, `id_wlaciciela`)
-                  VALUES ('{$marker->id}', '{$marker->name}', '{$marker->latitude}', '{$marker->longitude}', '{$marker->date_created}',
-                  '{$marker->active}', '{$marker->deleted}', '{$marker->date_deleted}', '{$marker->user_id}')";
+                  VALUES ('{$marker->id}', '{$marker->nazwa}', '{$marker->latitude}', '{$marker->longitude}', '{$marker->data_utworzenia}',
+                  '{$marker->aktywny}', '{$marker->usuniety}', '0000-00-00 00:00:00', '')";
 
         return $query;
         DBHelper::handle()->executeQuery($query);

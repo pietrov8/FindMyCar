@@ -49,6 +49,11 @@ Class Controller {
         return $this->getUserMarkersFromModel(false);
     }
 
+    public function getMarkerByName($marker_name) {
+        if(empty($marker_name)) return 'niepoprawna nazwa';
+        return $this->model->getMarkerByName($marker_name);
+    }
+
     public function getUserMarkersFromModel($is_active) {
         if(empty($_REQUEST['user_id'])) return 'niepoprawne ID uzytkownika';
 
