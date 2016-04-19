@@ -58,9 +58,9 @@ Class Controller {
     }
 
     public function getUserMarkersFromModel($is_active) {
-        if(empty($this->data['user_id'])) return 'niepoprawne ID uzytkownika';
+        if(empty($this->data->user_id)) return 'niepoprawne ID uzytkownika';
 
-        $user_id = $this->data['user_id'];
+        $user_id = $this->data->user_id;
         if($is_active) {
             return $this->model->getUserActiveMarker($user_id);
         }
@@ -68,18 +68,18 @@ Class Controller {
     }
 
     public function saveMarker() {
-        if(empty($this->data['marker'])) return 'blad przekazanych danych znacznika';
+        if(empty($this->data->marker)) return 'blad przekazanych danych znacznika';
 
-        $marker = $this->data['marker'];
+        $marker = $this->data->marker;
         $marker = json_decode($marker);
         $this->model->saveMarker($marker);
         return 'dodano znacznik!';
     }
 
     public function updateMarker() {
-        if(empty($this->data['marker'])) return 'blad przekazanych danych znacznika';
+        if(empty($this->data->marker)) return 'blad przekazanych danych znacznika';
 
-        $marker = $this->data['marker'];
+        $marker = $this->data->marker;
         $marker = json_decode($marker);
         $this->model->updateMarker($marker);
         return 'zaktualizowano dane znacznika!';
