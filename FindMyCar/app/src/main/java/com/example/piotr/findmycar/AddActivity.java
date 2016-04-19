@@ -8,7 +8,13 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 
 public class AddActivity extends Activity implements OnLocationChangedListener {
 
@@ -18,7 +24,10 @@ public class AddActivity extends Activity implements OnLocationChangedListener {
     }
 
     private MyCurrentLocation myCurrentLocation;
-    TextView descriptionTextView;
+    EditText marker_title;
+    TextView marker_lat;
+    TextView marker_long;
+    EditText descriptionTextView;
     private double mMyLatitude = 0;
     private double mMyLongitude = 0;
 
@@ -27,9 +36,28 @@ public class AddActivity extends Activity implements OnLocationChangedListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
-        descriptionTextView = (TextView) findViewById(R.id.marker_coordinates);
+        marker_title = (EditText) findViewById(R.id.marker_title);
+        marker_lat = (TextView) findViewById(R.id.marker_coordinates_lat);
+        marker_long = (TextView) findViewById(R.id.marker_coordinates_long);
+        descriptionTextView = (EditText) findViewById(R.id.marker_title_text);
 
-        descriptionTextView.setText("Brak ustalonej pozycji");
+
+        try {
+            JSONObject toSend = new JSONObject();
+            toSend.put("nazwa", marker_title.getText().toString());
+            toSend.put("latitude", marker_lat.getText().toString());
+            toSend.put("longitude", marker_long.getText().toString());
+            toSend.put("opis", descriptionTextView.getText().toString());
+            toSend.put("data_utworzenia", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+            toSend.put("aktywny", 1);
+            toSend.put("usuniety", 0);
+
+            JSONTransmitter transmitter = new JSONTransmitter();
+            transmitter.execute(new JSONObject[] {toSend});
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         setupListeners();
 

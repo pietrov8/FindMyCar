@@ -1,7 +1,6 @@
 package com.example.piotr.findmycar;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -35,8 +34,6 @@ public class JSONTransmitter extends AsyncTask<JSONObject, JSONObject, JSONObjec
             response = client.execute(post);
             String resFromServer = org.apache.http.util.EntityUtils.toString(response.getEntity());
 
-            jsonResponse=new JSONObject(resFromServer);
-            Log.i("Response from server", jsonResponse.getString("msg"));
         } catch (Exception e) { e.printStackTrace();}
 
         return jsonResponse;

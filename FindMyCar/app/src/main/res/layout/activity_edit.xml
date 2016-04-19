@@ -74,7 +74,15 @@
                 android:layout_width="0dp"
                 android:layout_weight="3"
                 android:layout_height="wrap_content"
-                android:id="@+id/marker_coordinates_edit"
+                android:id="@+id/marker_coordinates_long"
+                android:editable="false"
+                android:focusable="false"
+                android:textSize="46px"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:id="@+id/marker_coordinates_lat"
                 android:editable="false"
                 android:focusable="false"
                 android:textSize="46px"/>

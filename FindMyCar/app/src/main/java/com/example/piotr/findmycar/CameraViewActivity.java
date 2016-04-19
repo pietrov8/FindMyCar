@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
+import android.hardware.GeomagneticField;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,7 +21,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,6 +43,7 @@ public class CameraViewActivity extends Activity implements
 
 	private MyCurrentAzimuth myCurrentAzimuth;
 	private MyCurrentLocation myCurrentLocation;
+	GeomagneticField geoField;
 
 	TextView descriptionTextView;
 	ImageView pointerIcon;
@@ -61,6 +62,15 @@ public class CameraViewActivity extends Activity implements
 		setupLayout();
 		setAugmentedRealityPoint();
 
+		Location loc1 = new Location("A");
+		loc1.setLatitude(mMyLatitude);
+		loc1.setLongitude(mMyLongitude);
+
+		Location loc2 = new Location("B");
+		loc2.setLatitude(51.1399592);
+		loc2.setLongitude(22.8298641);
+
+
 		// initialize your android device sensor capabilities
 		mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
@@ -69,6 +79,7 @@ public class CameraViewActivity extends Activity implements
 		if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER )) {
 			buildAlertMessageNoGps();
 		}
+
 	}
 
 	public void buildAlertMessageNoGps() {
@@ -134,7 +145,7 @@ public class CameraViewActivity extends Activity implements
 
 		return phiAngle;
 	}
-	
+
 	private List<Double> calculateAzimuthAccuracy(double azimuth) {
 		double minAngle = azimuth - AZIMUTH_ACCURACY;
 		double maxAngle = azimuth + AZIMUTH_ACCURACY;
@@ -168,6 +179,35 @@ public class CameraViewActivity extends Activity implements
 		descriptionTextView.setText(mPoi.getPoiName() + " azimuthTeoretical "
 				+ mAzimuthTeoretical + " azimuthReal " + mAzimuthReal + " latitude "
 				+ mMyLatitude + " longitude " + mMyLongitude + " CompassValue" + currentDegree);
+		Location loc1 = new Location("A");
+		loc1.setLatitude(mMyLatitude);
+		loc1.setLongitude(mMyLongitude);
+
+		Location loc2 = new Location("B");
+		loc2.setLatitude(51.1399592);
+		loc2.setLongitude(22.8298641);
+
+		float bearing = loc1.bearingTo(loc2);
+		bearing = normalizeDegree(bearing);
+
+		pointerIcon = (ImageView) findViewById(R.id.icon);
+		arrowLeftIcon = (ImageView) findViewById(R.id.icon_arrow_left);
+		arrowRightIcon = (ImageView) findViewById(R.id.icon_arrow_right);
+
+		if (((bearing - 5) < currentDegree) && ((bearing + 5) > currentDegree)) {
+			pointerIcon.setVisibility(View.VISIBLE);
+			arrowLeftIcon.setVisibility(View.INVISIBLE);
+			arrowRightIcon.setVisibility(View.INVISIBLE);
+		} else if((bearing - 5) < currentDegree) {
+			pointerIcon.setVisibility(View.INVISIBLE);
+			arrowLeftIcon.setVisibility(View.VISIBLE);
+			arrowRightIcon.setVisibility(View.INVISIBLE);
+		} else if ((bearing + 5) > currentDegree) {
+			pointerIcon.setVisibility(View.INVISIBLE);
+			arrowLeftIcon.setVisibility(View.INVISIBLE);
+			arrowRightIcon.setVisibility(View.VISIBLE);
+		}
+
 	}
 
 	@Override
@@ -175,48 +215,21 @@ public class CameraViewActivity extends Activity implements
 		mMyLatitude = location.getLatitude();
 		mMyLongitude = location.getLongitude();
 		mAzimuthTeoretical = calculateTeoreticalAzimuth();
-
-		Location loc1 = new Location("A");
-		loc1.setLatitude(mMyLatitude);
-		loc1.setLongitude(mMyLongitude);
-
-		Location loc2 = new Location("B");
-		loc2.setLatitude(51.233171);
-		loc2.setLongitude(22.498841);
-
-		float distanceInMeters = loc1.distanceTo(loc2);
-
-		Toast.makeText(this,"Odległość: " + distanceInMeters + "m", Toast.LENGTH_SHORT).show();
 		updateDescription();
+
+	}
+
+	private float normalizeDegree(float value) {
+		if (value >= 0.0f && value <= 180.0f) {
+			return value;
+		} else {
+			return 180 + (180 + value);
+		}
 	}
 
 	@Override
 	public void onAzimuthChanged(float azimuthChangedFrom, float azimuthChangedTo) {
-		mAzimuthReal = azimuthChangedTo;
-		mAzimuthTeoretical = calculateTeoreticalAzimuth();
 
-		pointerIcon = (ImageView) findViewById(R.id.icon);
-		arrowLeftIcon = (ImageView) findViewById(R.id.icon_arrow_left);
-		arrowRightIcon = (ImageView) findViewById(R.id.icon_arrow_right);
-
-		double minAngle = calculateAzimuthAccuracy(mAzimuthTeoretical).get(0);
-		double maxAngle = calculateAzimuthAccuracy(mAzimuthTeoretical).get(1);
-
-		if (isBetween(minAngle, maxAngle, mAzimuthReal)) {
-			pointerIcon.setVisibility(View.VISIBLE);
-			arrowLeftIcon.setVisibility(View.INVISIBLE);
-			arrowRightIcon.setVisibility(View.INVISIBLE);
-		} else if(mAzimuthReal > mAzimuthTeoretical) {
-			pointerIcon.setVisibility(View.INVISIBLE);
-			arrowLeftIcon.setVisibility(View.VISIBLE);
-			arrowRightIcon.setVisibility(View.INVISIBLE);
-		} else if (mAzimuthReal < mAzimuthTeoretical) {
-			pointerIcon.setVisibility(View.INVISIBLE);
-			arrowLeftIcon.setVisibility(View.INVISIBLE);
-			arrowRightIcon.setVisibility(View.VISIBLE);
-		}
-
-		updateDescription();
 	}
 
 	@Override
@@ -293,6 +306,8 @@ public class CameraViewActivity extends Activity implements
 	public void onSensorChanged(SensorEvent event) {
 		float degree = Math.round(event.values[0]);
 		currentDegree = degree;
+
+		updateDescription();
 	}
 
 	@Override

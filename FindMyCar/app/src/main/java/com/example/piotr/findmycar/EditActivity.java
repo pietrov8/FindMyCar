@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,7 +23,9 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
     double mMyLongitude = 0;
     Button update_coordinates;
     EditText marker_title;
-    TextView marker_coordinates_edit;
+    TextView marker_lat;
+    TextView marker_long;
+    EditText marker_description;
     Location location;
 
     @Override
@@ -33,16 +36,39 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
         setupListeners();
 
         Bundle bundle_list = getIntent().getExtras();
-        String name_item = bundle_list.getString("name");
+        final String name_item = bundle_list.getString("name");
 
         marker_title = (EditText)findViewById(R.id.marker_title_edit);
+        marker_lat = (TextView)findViewById(R.id.marker_coordinates_lat);
+        marker_long = (TextView)findViewById(R.id.marker_coordinates_long);
+        marker_description = (EditText)findViewById(R.id.marker_title_text_edit);
         update_coordinates = (Button)findViewById(R.id.update_coordinates);
-        marker_coordinates_edit = (TextView) findViewById(R.id.marker_coordinates_edit);
-
-        marker_title.setText(name_item);
 
 
-        marker_coordinates_edit.setText(""+ mMyLatitude + mMyLongitude);
+                BackgorundTask asyncTask = (BackgorundTask) new BackgorundTask(new BackgorundTask.AsyncResponse(){
+            @Override
+            public void processFinish(String output){
+                try {
+                    JSONArray pages     =  new JSONArray(output);
+                    for (int i = 0; i < pages.length(); ++i) {
+                        JSONObject rec = pages.getJSONObject(i);
+                        String name_task = rec.getString("nazwa");
+                        String latitude = rec.getString("latitude");
+                        String longituide = rec.getString("longitude");
+                        String description = rec.getString("opis");
+                        if (name_task.equals(name_item)) {
+                            marker_title.setText(name_task);
+                            marker_lat.setText(latitude);
+                            marker_long.setText(longituide);
+                            marker_description.setText(description);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).execute("http://piotr-m.pl/piotr-m.zxy.me/findmycar/main.php?action=getAllMarkers");
+
 
         update_coordinates.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,16 +77,16 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
             }
         });
 
-        try {
-            JSONObject toSend = new JSONObject();
-            toSend.put("msg", name_item);
-
-            JSONTransmitter transmitter = new JSONTransmitter();
-            transmitter.execute(new JSONObject[] {toSend});
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            JSONObject toSend = new JSONObject();
+//            toSend.put("msg", name_item);
+//
+//            JSONTransmitter transmitter = new JSONTransmitter();
+//            transmitter.execute(new JSONObject[] {toSend});
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void updateGPSAlert() {
@@ -76,7 +102,8 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
                         if (location != null) {
                             mMyLatitude = location.getLatitude();
                             mMyLongitude = location.getLongitude();
-                            marker_coordinates_edit.setText("" + mMyLatitude + " " + mMyLongitude);
+                            marker_lat.setText(mMyLatitude+"");
+                            marker_long.setText(mMyLongitude+"");
                         }
                     }
                 })
