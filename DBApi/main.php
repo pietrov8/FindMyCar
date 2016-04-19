@@ -7,7 +7,9 @@ if(!isset($_REQUEST['json'])) {
     die;
 }
 $data = json_decode($_POST['json']);
-$action = isset($data['action']) ? $data['action'] : '';
+
+$action = isset($data->action) ? $data->action : '';
+Model::savefile($action);
 if(empty($action)) {
     echo 'błąd przekazanej akcji';
     die;

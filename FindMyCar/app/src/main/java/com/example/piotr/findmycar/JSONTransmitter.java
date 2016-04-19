@@ -15,7 +15,7 @@ import org.json.JSONObject;
  */
 public class JSONTransmitter extends AsyncTask<JSONObject, JSONObject, JSONObject> {
 
-    String url = "http://decleor.com.pl/fmc/main.php";
+    String url = "http://piotr-m.pl/fmc/main.php";
 
     @Override
     protected JSONObject doInBackground(JSONObject... data) {

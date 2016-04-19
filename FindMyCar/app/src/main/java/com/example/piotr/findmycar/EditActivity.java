@@ -67,7 +67,7 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
                     e.printStackTrace();
                 }
             }
-        }).execute("http://decleor.com.pl/fmc/main.php?action=getAllMarkers");
+        }).execute("http://piotr-m.pl/fmc/main.php?action=getAllMarkers");
 
         update_coordinates.setOnClickListener(new View.OnClickListener() {
             @Override

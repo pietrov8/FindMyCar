@@ -1,2 +1,12 @@
 
-brak
+stdClass Object
+(
+    [action] => add_marker
+    [nazwa] => huhdayifyas
+    [latitude] => 51.2696851
+    [longitude] => 22.562129
+    [opis] => aufgukasfgaskfg
+    [data_utworzenia] => 2016-04-19 20:43:58
+    [aktywny] => 1
+    [usuniety] => 0
+)
