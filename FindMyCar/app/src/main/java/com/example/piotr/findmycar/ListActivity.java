@@ -47,7 +47,7 @@ public class ListActivity extends Activity {
                     e.printStackTrace();
                 }
             }
-        }).execute("http://piotr-m.pl/piotr-m.zxy.me/findmycar/main.php?action=getAllMarkers");
+        }).execute("http://decleor.com.pl/fmc/main.php?action=getAllMarkers");
 
 
         adapter = new MyCustomAdapter(listAdapter, this);

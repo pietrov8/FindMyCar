@@ -45,7 +45,7 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
         update_coordinates = (Button)findViewById(R.id.update_coordinates);
 
 
-                BackgorundTask asyncTask = (BackgorundTask) new BackgorundTask(new BackgorundTask.AsyncResponse(){
+        BackgorundTask asyncTask = (BackgorundTask) new BackgorundTask(new BackgorundTask.AsyncResponse(){
             @Override
             public void processFinish(String output){
                 try {
@@ -67,8 +67,7 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
                     e.printStackTrace();
                 }
             }
-        }).execute("http://piotr-m.pl/piotr-m.zxy.me/findmycar/main.php?action=getAllMarkers");
-
+        }).execute("http://decleor.com.pl/fmc/main.php?action=getAllMarkers");
 
         update_coordinates.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,16 +76,6 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
             }
         });
 
-//        try {
-//            JSONObject toSend = new JSONObject();
-//            toSend.put("msg", name_item);
-//
-//            JSONTransmitter transmitter = new JSONTransmitter();
-//            transmitter.execute(new JSONObject[] {toSend});
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
     }
 
     public void updateGPSAlert() {

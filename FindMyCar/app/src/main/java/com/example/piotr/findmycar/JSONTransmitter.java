@@ -15,7 +15,7 @@ import org.json.JSONObject;
  */
 public class JSONTransmitter extends AsyncTask<JSONObject, JSONObject, JSONObject> {
 
-    String url = "http://piotr-m.pl/piotr-m.zxy.me/findmycar/main.php";
+    String url = "http://decleor.com.pl/fmc/main.php";
 
     @Override
     protected JSONObject doInBackground(JSONObject... data) {
@@ -29,14 +29,10 @@ public class JSONTransmitter extends AsyncTask<JSONObject, JSONObject, JSONObjec
             StringEntity se = new StringEntity("json="+json.toString());
             post.addHeader("content-type", "application/x-www-form-urlencoded");
             post.setEntity(se);
-
-            HttpResponse response;
-            response = client.execute(post);
-            String resFromServer = org.apache.http.util.EntityUtils.toString(response.getEntity());
+            HttpResponse response = client.execute(post);
 
         } catch (Exception e) { e.printStackTrace();}
 
         return jsonResponse;
     }
-
 }

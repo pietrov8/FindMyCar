@@ -8,13 +8,17 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AddActivity extends Activity implements OnLocationChangedListener {
 
@@ -28,6 +32,9 @@ public class AddActivity extends Activity implements OnLocationChangedListener {
     TextView marker_lat;
     TextView marker_long;
     EditText descriptionTextView;
+    Button add_marker_button;
+
+
     private double mMyLatitude = 0;
     private double mMyLongitude = 0;
 
@@ -40,24 +47,38 @@ public class AddActivity extends Activity implements OnLocationChangedListener {
         marker_lat = (TextView) findViewById(R.id.marker_coordinates_lat);
         marker_long = (TextView) findViewById(R.id.marker_coordinates_long);
         descriptionTextView = (EditText) findViewById(R.id.marker_title_text);
+        add_marker_button = (Button)findViewById(R.id.add_marker);
 
+        marker_title.setText("huhdayifyas");
+        descriptionTextView.setText("aufgukasfgaskfg");
 
-        try {
-            JSONObject toSend = new JSONObject();
-            toSend.put("nazwa", marker_title.getText().toString());
-            toSend.put("latitude", marker_lat.getText().toString());
-            toSend.put("longitude", marker_long.getText().toString());
-            toSend.put("opis", descriptionTextView.getText().toString());
-            toSend.put("data_utworzenia", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-            toSend.put("aktywny", 1);
-            toSend.put("usuniety", 0);
+        add_marker_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    //get current date time with Date()
+                    Date date = new Date();
+                    JSONObject toSend = new JSONObject();
+                    toSend.put("action", "add_marker");
+                    toSend.put("nazwa", marker_title.getText().toString());
+                    toSend.put("latitude", marker_lat.getText().toString());
+                    toSend.put("longitude", marker_long.getText().toString());
+                    toSend.put("opis", descriptionTextView.getText().toString());
+                    toSend.put("data_utworzenia", dateFormat.format(date));
+                    toSend.put("aktywny", 1);
+                    toSend.put("usuniety", 0);
 
-            JSONTransmitter transmitter = new JSONTransmitter();
-            transmitter.execute(new JSONObject[] {toSend});
+                    System.out.println(toSend);
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                    JSONTransmitter transmitter = new JSONTransmitter();
+                    transmitter.execute(new JSONObject[] {toSend});
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         setupListeners();
 
@@ -93,7 +114,8 @@ public class AddActivity extends Activity implements OnLocationChangedListener {
     public void onLocationChanged(Location location) {
         mMyLatitude = location.getLatitude();
         mMyLongitude = location.getLongitude();
-        descriptionTextView.setText(""+ mMyLatitude + " " + mMyLongitude);
+        marker_lat.setText(mMyLatitude+"");
+        marker_long.setText(mMyLongitude+"");
 
     }
     private void setupListeners() {

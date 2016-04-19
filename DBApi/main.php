@@ -2,12 +2,15 @@
 require_once('./controller.php');
 require_once('./classes/Model.php');
 
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+if(!isset($_REQUEST['json']) {
+    echo "niepoprawna akcja";
+    die;
+}
+
+$action = isset($_REQUEST['json']['action']) ? $_REQUEST['json']['action'] : '';
 $a = Controller::handle()->$action();
 
 $zmienna = isset($_POST["json"]) ? $_POST["json"] : 'brak';
-
-Model::handler()->savefile($zmienna);
 
 //if( isset($_POST["json"]) ) {
 //    $data = json_decode($_POST["json"]);
@@ -16,8 +19,8 @@ Model::handler()->savefile($zmienna);
 //}
 //
 //
-//try {
-//    echo json_encode(Controller::handle()->$action());
-//} catch(Exception $e) {
-//    echo 'Przekazano niepoprawną akcję';
-//}
+try {
+    echo json_encode(Controller::handle()->$action());
+} catch(Exception $e) {
+    echo 'Przekazano niepoprawną akcję';
+}
