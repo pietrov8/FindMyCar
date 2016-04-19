@@ -11,20 +11,23 @@ Class Controller {
 
     private $model = null;
 
+    private $data = null;
+
     /**
      * @var PDO
      */
     public static $db;
 
-    private function __construct(){
+    private function __construct($data){
+        $this->data = $data;
         $this->model = Model::handler();
     }
 
-    public static function handle (){
+    public static function handle ($data = null){
         if(self::$instance) {
             return self::$instance;
         }
-        return new self;
+        return new self($data);
     }
 
 
@@ -55,9 +58,9 @@ Class Controller {
     }
 
     public function getUserMarkersFromModel($is_active) {
-        if(empty($_REQUEST['user_id'])) return 'niepoprawne ID uzytkownika';
+        if(empty($this->data['user_id'])) return 'niepoprawne ID uzytkownika';
 
-        $user_id = $_REQUEST['user_id'];
+        $user_id = $this->data['user_id'];
         if($is_active) {
             return $this->model->getUserActiveMarker($user_id);
         }
@@ -65,18 +68,18 @@ Class Controller {
     }
 
     public function saveMarker() {
-        if(empty($_REQUEST['marker'])) return 'blad przekazanych danych znacznika';
+        if(empty($this->data['marker'])) return 'blad przekazanych danych znacznika';
 
-        $marker = $_REQUEST['marker'];
+        $marker = $this->data['marker'];
         $marker = json_decode($marker);
         $this->model->saveMarker($marker);
         return 'dodano znacznik!';
     }
 
     public function updateMarker() {
-        if(empty($_REQUEST['marker'])) return 'blad przekazanych danych znacznika';
+        if(empty($this->data['marker'])) return 'blad przekazanych danych znacznika';
 
-        $marker = $_REQUEST['marker'];
+        $marker = $this->data['marker'];
         $marker = json_decode($marker);
         $this->model->updateMarker($marker);
         return 'zaktualizowano dane znacznika!';
