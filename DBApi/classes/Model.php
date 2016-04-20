@@ -37,29 +37,33 @@ class Model {
 
     public function updateMarker($marker) {
         $query = "UPDATE znaczniki SET
-                       `nazwa` = '{$marker->nazwa}',
                        `latitude` = '{$marker->latitude}',
                        `longitude` = '{$marker->longitude}',
-                       `data_utworzenia`= '{$marker->data_utworzenia}',
                        `aktywny` = '{$marker->aktywny}',
-                       `usuniety` = '{$marker->usuniety}',
-                       `data_usuniecia` = '{$marker->data_usuniecia}',
-                       `id_wlasciciela` = '{$marker->id_wlasciciela}',
                   WHERE `nazwa` = '{$marker->nazwa}'";
-        return $query;
         DBHelper::handle()->executeQuery($query);
+        return 'edytowano znacznik';
     }
 
-    public function saveMarker ($marker) {
-        $query = "INSERT INTO bieznie (`id`, `nazwa`, `latitude`, `longitude`, `data_utworzenia`, `aktywny`, `usuniety`,
+    public function addMarker ($marker) {
+        $query = "INSERT INTO znaczniki (`nazwa`, `latitude`, `longitude`, `data_utworzenia`, `aktywny`, `usuniety`,
                     `data_usuniecia`, `id_wlaciciela`)
-                  VALUES ('{$marker->id}', '{$marker->nazwa}', '{$marker->latitude}', '{$marker->longitude}', '{$marker->data_utworzenia}',
+                  VALUES ('{$marker->nazwa}', '{$marker->latitude}', '{$marker->longitude}', '{$marker->data_utworzenia}',
                   '{$marker->aktywny}', '{$marker->usuniety}', '0000-00-00 00:00:00', '')";
 
-        return $query;
         DBHelper::handle()->executeQuery($query);
+        return 'dodano znacznik';
     }
 
+
+    public function removeMarker($marker_name) {
+        $query = "UPDATE znaczniki SET
+                       `usuniety` = 1,
+                       `data_usuniecia` = " + date("Y-m-d H:i:s")
+            + "WHERE `nazwa` = '{$marker_name}'";
+        DBHelper::handle()->executeQuery($query);
+        return 'usunieto znacznik';
+    }
 
     public static function savefile($text, $file = 'wtf.txt', $mode = 'a+', $separator = "\n") {
         $h = fopen($file, $mode);

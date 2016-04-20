@@ -67,19 +67,19 @@ Class Controller {
         return $this->model->getUserMarkers($user_id);
     }
 
-    public function saveMarker() {
-        if(empty($this->data->marker)) return 'blad przekazanych danych znacznika';
+    public function addMarker() {
+        if(empty($this->data)) return 'blad przekazanych danych znacznika';
 
-        $marker = $this->data->marker;
+        $marker = $this->data;
         $marker = json_decode($marker);
-        $this->model->saveMarker($marker);
+        $this->model->addMarker($marker);
         return 'dodano znacznik!';
     }
 
     public function updateMarker() {
-        if(empty($this->data->marker)) return 'blad przekazanych danych znacznika';
+        if(empty($this->data)) return 'blad przekazanych danych znacznika';
 
-        $marker = $this->data->marker;
+        $marker = $this->data;
         $marker = json_decode($marker);
         $this->model->updateMarker($marker);
         return 'zaktualizowano dane znacznika!';
