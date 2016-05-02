@@ -21,6 +21,7 @@ class DBHelper {
     private function __construct(){
         try {
             self::$db = new PDO('mysql:host=localhost;dbname=piotrmp1_findmycar', 'piotrmp1_fmc', 'findmycar');
+//            self::$db = new PDO('mysql:host=localhost;dbname=FMC', 'root', '');
             self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $e) {
             echo 'blad polaczenia z baza danych';

@@ -50,7 +50,7 @@ class Model {
         $query = "INSERT INTO znaczniki (`nazwa`, `latitude`, `longitude`, `opis`,`data_utworzenia`, `aktywny`, `usuniety`,
                     `data_usuniecia`, `id_wlasciciela`)
                   VALUES ('{$marker->nazwa}', '{$marker->latitude}', '{$marker->longitude}', '{$marker->opis}', '{$marker->data_utworzenia}',
-                  '1', '0', '0000-00-00 00:00:00', '')";
+                  '1', '0', '0000-00-00 00:00:00', null)";
         DBHelper::handle()->executeQuery($query);
         return 'dodano znacznik';
     }
