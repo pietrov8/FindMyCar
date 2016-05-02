@@ -31,10 +31,16 @@ public class ListActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        JSONObject toSend = new JSONObject();
+        try {
+            toSend.put("action", "getAllMarkers");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        BackgorundTask asyncTask = (BackgorundTask) new BackgorundTask(new BackgorundTask.AsyncResponse(){
+        JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
             @Override
-            public void processFinish(String output){
+            public void processFinish(String output) {
                 try {
                     JSONArray  pages     =  new JSONArray(output);
                     for (int i = 0; i < pages.length(); ++i) {
@@ -47,9 +53,7 @@ public class ListActivity extends Activity {
                     e.printStackTrace();
                 }
             }
-        }).execute("http://piotr-m.pl/fmc/main.php?action=getAllMarkers");
-
-//        execute("http://decleor.com.pl/fmc/main.php?action=getAllMarkers");
+        }).execute(toSend);
 
         adapter = new MyCustomAdapter(listAdapter, this);
 
@@ -136,7 +140,10 @@ public class ListActivity extends Activity {
                 mp2.start();
                 break;
             case R.id.get_marker_info:
+                Bundle put2 = new Bundle();
+                put2.putString("name", name_item);
                 Intent iii = new Intent(getApplicationContext(), MarkerInfo.class);
+                iii.putExtras(put2);
                 startActivity(iii);
                 mp2.start();
             default:

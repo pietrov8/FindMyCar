@@ -6,10 +6,9 @@ if(!isset($_REQUEST['json'])) {
     echo 'brak przekazanych danych';
     die;
 }
-$data = json_decode($_POST['json']);
-
+$data = json_decode($_REQUEST['json']);
 $action = isset($data->action) ? $data->action : '';
-Model::savefile($action);
+
 if(empty($action)) {
     echo 'błąd przekazanej akcji';
     die;

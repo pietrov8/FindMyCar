@@ -75,7 +75,13 @@
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/marker_coordinates_id"/>
+                android:id="@+id/marker_coordinates_lat_id"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/marker_coordinates_long_id"/>
             />
         </TableRow>
 

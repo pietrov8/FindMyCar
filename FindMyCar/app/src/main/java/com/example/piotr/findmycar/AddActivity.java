@@ -55,28 +55,29 @@ public class AddActivity extends Activity implements OnLocationChangedListener {
         add_marker_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                JSONObject toSend = new JSONObject();
                 try {
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     //get current date time with Date()
                     Date date = new Date();
-                    JSONObject toSend = new JSONObject();
-                    toSend.put("action", "add_marker");
+                    toSend.put("action", "addMarker");
                     toSend.put("nazwa", marker_title.getText().toString());
                     toSend.put("latitude", marker_lat.getText().toString());
                     toSend.put("longitude", marker_long.getText().toString());
                     toSend.put("opis", descriptionTextView.getText().toString());
                     toSend.put("data_utworzenia", dateFormat.format(date));
-                    toSend.put("aktywny", 1);
-                    toSend.put("usuniety", 0);
-
-                    System.out.println(toSend);
-
-                    JSONTransmitter transmitter = new JSONTransmitter();
-                    transmitter.execute(new JSONObject[] {toSend});
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                System.out.println(toSend);
+
+                JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) {
+                        System.out.println(output);
+                    }
+                }).execute(toSend);
             }
         });
 

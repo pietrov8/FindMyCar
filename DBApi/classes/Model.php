@@ -46,11 +46,11 @@ class Model {
     }
 
     public function addMarker ($marker) {
-        $query = "INSERT INTO znaczniki (`nazwa`, `latitude`, `longitude`, `data_utworzenia`, `aktywny`, `usuniety`,
-                    `data_usuniecia`, `id_wlaciciela`)
-                  VALUES ('{$marker->nazwa}', '{$marker->latitude}', '{$marker->longitude}', '{$marker->data_utworzenia}',
-                  '{$marker->aktywny}', '{$marker->usuniety}', '0000-00-00 00:00:00', '')";
 
+        $query = "INSERT INTO znaczniki (`nazwa`, `latitude`, `longitude`, `opis`,`data_utworzenia`, `aktywny`, `usuniety`,
+                    `data_usuniecia`, `id_wlasciciela`)
+                  VALUES ('{$marker->nazwa}', '{$marker->latitude}', '{$marker->longitude}', '{$marker->opis}', '{$marker->data_utworzenia}',
+                  '1', '0', '0000-00-00 00:00:00', '')";
         DBHelper::handle()->executeQuery($query);
         return 'dodano znacznik';
     }

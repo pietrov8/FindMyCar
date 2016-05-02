@@ -13,26 +13,46 @@ import org.json.JSONObject;
 /**
  * Created by piotr on 2016-04-18.
  */
-public class JSONTransmitter extends AsyncTask<JSONObject, JSONObject, JSONObject> {
+public class JSONTransmitter extends AsyncTask<JSONObject, JSONObject, String> {
+
+    public interface AsyncResponse {
+        void processFinish(String output);
+    }
+
+    public AsyncResponse delegate = null;
+
+    public JSONTransmitter(AsyncResponse delegate){
+        this.delegate = delegate;
+    }
 
     String url = "http://piotr-m.pl/fmc/main.php";
 
     @Override
-    protected JSONObject doInBackground(JSONObject... data) {
+    protected String doInBackground(JSONObject... data) {
         JSONObject json = data[0];
         HttpClient client = new DefaultHttpClient();
         HttpConnectionParams.setConnectionTimeout(client.getParams(), 100000);
 
-        JSONObject jsonResponse = null;
+        String jsonResponse = null;
         HttpPost post = new HttpPost(url);
+
         try {
             StringEntity se = new StringEntity("json="+json.toString());
             post.addHeader("content-type", "application/x-www-form-urlencoded");
             post.setEntity(se);
-            HttpResponse response = client.execute(post);
+            HttpResponse response;
+            response = client.execute(post);
+            String resFromServer = org.apache.http.util.EntityUtils.toString(response.getEntity());
+            jsonResponse = resFromServer;
 
         } catch (Exception e) { e.printStackTrace();}
 
         return jsonResponse;
     }
+
+    @Override
+    protected void onPostExecute(String jsonResponse) {
+        delegate.processFinish(jsonResponse);
+    }
+
 }

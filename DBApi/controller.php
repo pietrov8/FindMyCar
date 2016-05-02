@@ -70,9 +70,7 @@ Class Controller {
     public function addMarker() {
         if(empty($this->data)) return 'blad przekazanych danych znacznika';
 
-        $marker = $this->data;
-        $marker = json_decode($marker);
-        $this->model->addMarker($marker);
+        $this->model->addMarker($this->data);
         return 'dodano znacznik!';
     }
 

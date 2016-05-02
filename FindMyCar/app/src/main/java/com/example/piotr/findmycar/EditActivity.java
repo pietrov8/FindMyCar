@@ -44,10 +44,16 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
         marker_description = (EditText)findViewById(R.id.marker_title_text_edit);
         update_coordinates = (Button)findViewById(R.id.update_coordinates);
 
+        JSONObject toSend = new JSONObject();
+        try {
+            toSend.put("action", "getAllMarkers");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        BackgorundTask asyncTask = (BackgorundTask) new BackgorundTask(new BackgorundTask.AsyncResponse(){
+        JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
             @Override
-            public void processFinish(String output){
+            public void processFinish(String output) {
                 try {
                     JSONArray pages     =  new JSONArray(output);
                     for (int i = 0; i < pages.length(); ++i) {
@@ -67,7 +73,7 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
                     e.printStackTrace();
                 }
             }
-        }).execute("http://piotr-m.pl/fmc/main.php?action=getAllMarkers");
+        }).execute(toSend);
 
         update_coordinates.setOnClickListener(new View.OnClickListener() {
             @Override
