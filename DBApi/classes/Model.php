@@ -51,6 +51,7 @@ class Model {
                     `data_usuniecia`, `id_wlasciciela`)
                   VALUES ('{$marker->nazwa}', '{$marker->latitude}', '{$marker->longitude}', '{$marker->opis}', '{$marker->data_utworzenia}',
                   '1', '0', '0000-00-00 00:00:00', null)";
+        Model::savefile($query);
         DBHelper::handle()->executeQuery($query);
         return 'dodano znacznik';
     }

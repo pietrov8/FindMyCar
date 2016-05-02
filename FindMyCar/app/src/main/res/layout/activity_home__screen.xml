@@ -11,19 +11,18 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:id="@+id/relativeLayout">
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/open_camera"
-            android:id="@+id/Btn_camera" />
+        <!--<Button-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/open_camera"-->
+            <!--android:id="@+id/Btn_camera" />-->
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/AddAcivity_add_marker"
             android:id="@+id/btn_add"
-            android:layout_below="@+id/Btn_camera"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true" />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

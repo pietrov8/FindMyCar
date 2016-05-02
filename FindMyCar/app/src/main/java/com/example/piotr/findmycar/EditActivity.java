@@ -17,15 +17,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class EditActivity extends Activity implements OnLocationChangedListener {
     private MyCurrentLocation myCurrentLocation;
     double mMyLatitude = 0;
     double mMyLongitude = 0;
     Button update_coordinates;
+    Button change_marker;
     EditText marker_title;
     TextView marker_lat;
     TextView marker_long;
-    EditText marker_description;
+    EditText descriptionTextView;
     Location location;
 
     @Override
@@ -41,8 +46,9 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
         marker_title = (EditText)findViewById(R.id.marker_title_edit);
         marker_lat = (TextView)findViewById(R.id.marker_coordinates_lat);
         marker_long = (TextView)findViewById(R.id.marker_coordinates_long);
-        marker_description = (EditText)findViewById(R.id.marker_title_text_edit);
+        descriptionTextView = (EditText)findViewById(R.id.marker_title_text_edit);
         update_coordinates = (Button)findViewById(R.id.update_coordinates);
+        change_marker = (Button)findViewById(R.id.change_marker);
 
         JSONObject toSend = new JSONObject();
         try {
@@ -66,7 +72,7 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
                             marker_title.setText(name_task);
                             marker_lat.setText(latitude);
                             marker_long.setText(longituide);
-                            marker_description.setText(description);
+                            descriptionTextView.setText(description);
                         }
                     }
                 } catch (JSONException e) {
@@ -74,6 +80,85 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
                 }
             }
         }).execute(toSend);
+
+        change_marker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String marker_title_val = marker_title.getText().toString();
+                final String marker_lat_val = marker_lat.getText().toString();
+                final String marker_long_val = marker_long.getText().toString();
+                final String descriptionTextView_val = descriptionTextView.getText().toString();
+                int error = 0;
+                int error1 = 0;
+                int error2 = 0;
+                int error3 = 0;
+
+                if (marker_title_val.length() == 0) {
+                    error1++;
+                }
+                if (marker_lat_val.length() == 0) {
+                    error2++;
+                }
+                if (descriptionTextView_val.length() == 0) {
+                    error3++;
+                }
+
+                error = error1 + error2 + error3;
+
+                if (error > 0) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this);
+                    String message_validation="";
+                    String message_validation1="";
+                    String message_validation2="";
+                    String message_validation3="";
+                    if (error > 0) {
+                        message_validation1 = getString(R.string.validation_title);
+                    }
+                    if (error2 > 0) {
+                        message_validation2 = getString(R.string.validation_coordinates);
+                    }
+                    if (error3 > 0) {
+                        message_validation3 = getString(R.string.validation_description);
+                    }
+                    message_validation = message_validation1 +"\n" + message_validation2 + "\n" + message_validation3;
+                    builder.setMessage(message_validation);
+                    builder.setPositiveButton(R.string.correct_text,null);
+                    builder.setTitle(R.string.validation_error);
+                    builder.setCancelable(true);
+
+                    final AlertDialog alert = builder.create();
+                    alert.show();
+                } else {
+                    JSONObject toSend2 = new JSONObject();
+                    try {
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        //get current date time with Date()
+                        Date date = new Date();
+                        toSend2.put("action", "updateMarker");
+                        toSend2.put("nazwa", marker_title_val);
+                        toSend2.put("latitude", marker_lat_val);
+                        toSend2.put("longitude", marker_long_val);
+                        toSend2.put("opis", descriptionTextView_val);
+                        toSend2.put("data_utworzenia", dateFormat.format(date));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(toSend2);
+
+                    JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            System.out.println(output);
+                        }
+                    }).execute(toSend2);
+
+                    Intent i = new Intent(getApplicationContext(), ListActivity.class);
+                    finish();
+                    startActivity(i);
+                }
+            }
+        });
 
         update_coordinates.setOnClickListener(new View.OnClickListener() {
             @Override

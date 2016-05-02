@@ -22,6 +22,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +50,7 @@ public class CameraViewActivity extends Activity implements
 	GeomagneticField geoField;
 
 	TextView descriptionTextView;
+	TextView descriptionTextView2;
 	ImageView pointerIcon;
 	ImageView arrowLeftIcon;
 	ImageView arrowRightIcon;
@@ -66,10 +71,44 @@ public class CameraViewActivity extends Activity implements
 		loc1.setLatitude(mMyLatitude);
 		loc1.setLongitude(mMyLongitude);
 
-		Location loc2 = new Location("B");
-		loc2.setLatitude(51.1399592);
-		loc2.setLongitude(22.8298641);
+		Bundle bundle_list = getIntent().getExtras();
+		final String name_item = bundle_list.getString("name");
 
+		JSONObject toSend = new JSONObject();
+		try {
+			toSend.put("action", "getAllMarkers");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
+			@Override
+			public void processFinish(String output) {
+				try {
+					JSONArray pages     =  new JSONArray(output);
+					for (int i = 0; i < pages.length(); ++i) {
+						JSONObject rec = pages.getJSONObject(i);
+						String name_task = rec.getString("nazwa");
+						double latitude = Double.parseDouble(rec.getString("latitude"));
+						double longituide = Double.parseDouble(rec.getString("longitude"));
+						String description = rec.getString("opis");
+						String name_item_title = String.valueOf(R.string.marker_title);
+						String coordinates_title = String.valueOf(R.string.marker_coordinates);
+						String description_title = String.valueOf(R.string.marker_description);
+						if (name_task.equals(name_item)) {
+							descriptionTextView.setText(name_item + " " + latitude +", "+ longituide + "\n" + description);
+							mPoi = new AugmentedPOI(
+									name_item,
+									description,
+									latitude,longituide
+							);
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		}).execute(toSend);
 
 		// initialize your android device sensor capabilities
 		mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -101,49 +140,6 @@ public class CameraViewActivity extends Activity implements
 	}
 
 	private void setAugmentedRealityPoint() {
-		Bundle bundle_list = getIntent().getExtras();
-		String name_item;
-		if (bundle_list !=null) {
-			name_item = bundle_list.getString("name");
-			mPoi = new AugmentedPOI(
-					name_item,
-					"Mój samochód",
-					51.23661,22.5485909
-			);
-		} else {
-			mPoi = new AugmentedPOI(
-					"Znacznik ostatnio ustawiony",
-					"Mój samochód",
-					51.23661,22.5485909
-			);
-		}
-
-
-	}
-
-	public double calculateTeoreticalAzimuth() {
-		double dX = mPoi.getPoiLatitude() - mMyLatitude;
-		double dY = mPoi.getPoiLongitude() - mMyLongitude;
-
-		double phiAngle;
-		double tanPhi;
-		double azimuth = 0;
-
-		tanPhi = Math.abs(dY / dX);
-		phiAngle = Math.atan(tanPhi);
-		phiAngle = Math.toDegrees(phiAngle);
-
-		if (dX > 0 && dY > 0) { // I quater
-			return azimuth = phiAngle;
-		} else if (dX < 0 && dY > 0) { // II
-			return azimuth = 180 - phiAngle;
-		} else if (dX < 0 && dY < 0) { // III
-			return azimuth = 180 + phiAngle;
-		} else if (dX > 0 && dY < 0) { // IV
-			return azimuth = 360 - phiAngle;
-		}
-
-		return phiAngle;
 	}
 
 	private List<Double> calculateAzimuthAccuracy(double azimuth) {
@@ -176,16 +172,19 @@ public class CameraViewActivity extends Activity implements
 	}
 
 	private void updateDescription() {
-		descriptionTextView.setText(mPoi.getPoiName() + " azimuthTeoretical "
-				+ mAzimuthTeoretical + " azimuthReal " + mAzimuthReal + " latitude "
-				+ mMyLatitude + " longitude " + mMyLongitude + " CompassValue" + currentDegree);
 		Location loc1 = new Location("A");
 		loc1.setLatitude(mMyLatitude);
 		loc1.setLongitude(mMyLongitude);
 
+		descriptionTextView2.setText("Twoja lokalizajca: " + mMyLatitude+","+mMyLongitude);
+
+		Bundle bundle_list = getIntent().getExtras();
+		final double longitiude = Double.parseDouble(bundle_list.getString("long"));
+		final double latitiude = Double.parseDouble(bundle_list.getString("lat"));
+
 		Location loc2 = new Location("B");
-		loc2.setLatitude(51.1399592);
-		loc2.setLongitude(22.8298641);
+		loc2.setLatitude(latitiude);
+		loc2.setLongitude(longitiude);
 
 		float bearing = loc1.bearingTo(loc2);
 		bearing = normalizeDegree(bearing);
@@ -214,7 +213,6 @@ public class CameraViewActivity extends Activity implements
 	public void onLocationChanged(Location location) {
 		mMyLatitude = location.getLatitude();
 		mMyLongitude = location.getLongitude();
-		mAzimuthTeoretical = calculateTeoreticalAzimuth();
 		updateDescription();
 
 	}
@@ -261,6 +259,7 @@ public class CameraViewActivity extends Activity implements
 
 	private void setupLayout() {
 		descriptionTextView = (TextView) findViewById(R.id.cameraTextView);
+		descriptionTextView2 = (TextView) findViewById(R.id.cameraTextView2);
 
 		getWindow().setFormat(PixelFormat.UNKNOWN);
 		SurfaceView surfaceView = (SurfaceView) findViewById(R.id.cameraview);

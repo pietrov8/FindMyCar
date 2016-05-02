@@ -41,4 +41,18 @@
     <string name="marker_user">Dodane przez</string>
     <string name="marker_description">Opis znacznika</string>
     <string name="marker_choose">Prowadź</string>
+    <string name="validation_error">Błąd</string>
+    <string name="validation_title">Nie podałeś nazwy znacznika</string>
+    <string name="validation_coordinates">Poczekaj na prawidłową pozycję GPS</string>
+    <string name="validation_description">Nie podałeś opisu znacznika</string>
+    <string name="correct_text">Ok poprawię</string>
+    <string name="internet_enable">Czy chcesz włączyć internet?</string>
+    <string name="no_internet">Brak połączenia z internetem</string>
+    <string name="no_internet_information_add_marker">Aby umożliwić dodanie znacznika aplikacja potrzebuje dostępu do internetu</string>
+    <string name="no_internet_information_list_markers">Aby wyświetlić listę znaczników aplikacja potrzebuje dostępu do internetu</string>
+    <string name="no_internet_information_delete_markers">Aby usunąć znacznika aplikacja potrzebuje dostępu do internetu</string>
+    <string name="no_internet_information_choose_markers">Aby doprowadzić do znacznika aplikacja potrzebuje dostępu do internetu</string>
+    <string name="no_internet_information_info_markers">Aby wyświetlić listę szczegóły znacznika aplikacja potrzebuje dostępu do internetu</string>
+    <string name="no_internet_information_edit_markers">Aby zedytować znacznik aplikacja potrzebuje dostępu do internetu</string>
+    <string name="ok">Ok</string>
 </resources>

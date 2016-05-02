@@ -1,10 +1,13 @@
 package com.example.piotr.findmycar;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -19,18 +22,10 @@ public class Home_Screen extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home__screen);
-        Button btnCamera = (Button) findViewById(R.id.Btn_camera);
+//        Button btnCamera = (Button) findViewById(R.id.Btn_camera);
         Button btnAddMarker = (Button) findViewById(R.id.btn_add);
         Button btnEditMarker = (Button) findViewById(R.id.btn_edit_marker);
         Button btnListMarker = (Button) findViewById(R.id.btn_list_marker);
-
-        btnCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), CameraViewActivity.class);
-                startActivity(i);
-            }
-        });
 
         btnAddMarker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,19 +35,19 @@ public class Home_Screen extends ActionBarActivity {
             }
         });
 
-//        btnEditMarker.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(getApplicationContext(), EditActivity.class);
-//                startActivity(i);
-//            }
-//        });
-
         btnListMarker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), ListActivity.class);
-                startActivity(i);
+                if (isConnected()) {
+                    startActivity(i);
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Home_Screen.this);
+                    builder.setTitle(R.string.no_internet);
+                    builder.setMessage(R.string.no_internet_information_list_markers);
+                    builder.setPositiveButton(R.string.ok, null);
+                    builder.show();
+                }
             }
         });
 
@@ -87,6 +82,15 @@ public class Home_Screen extends ActionBarActivity {
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public boolean isConnected(){
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected())
+            return true;
+        else
+            return false;
     }
 
     @Override

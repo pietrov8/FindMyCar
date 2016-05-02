@@ -50,7 +50,8 @@
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/marker_title_id"/>
+                android:id="@+id/marker_title_id"
+                android:textSize="46px"/>
             />
         </TableRow>
 
@@ -75,13 +76,15 @@
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/marker_coordinates_lat_id"/>
+                android:id="@+id/marker_coordinates_lat_id"
+                android:textSize="46px"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/marker_coordinates_long_id"/>
+                android:id="@+id/marker_coordinates_long_id"
+                android:textSize="46px"/>
             />
         </TableRow>
 
@@ -110,30 +113,30 @@
             />
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <!--<TableRow-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/marker_user"/>
-            />
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="2"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                <!--android:text="@string/marker_user"/>-->
+            <!--/>-->
+        <!--</TableRow>-->
+        <!--<TableRow-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/marker_user_id"/>
-            />
-        </TableRow>
+            <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="2"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                <!--android:id="@+id/marker_user_id"/>-->
+            <!--/>-->
+        <!--</TableRow>-->
 
         <TableRow
             android:layout_width="match_parent"
@@ -156,7 +159,8 @@
                 android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/marker_description_id"/>
+                android:id="@+id/marker_description_id"
+                android:textSize="40px"/>
             />
         </TableRow>
         <TableRow

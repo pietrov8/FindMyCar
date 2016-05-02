@@ -129,7 +129,7 @@
                 style="?android:attr/buttonStyleSmall"
                 android:layout_height="wrap_content"
                 android:text="@string/AddAcivity_edit_marker"
-                android:id="@+id/add_marker"
+                android:id="@+id/change_marker"
                 android:layout_width="0dp"
                 android:layout_weight="1"/>
             <Button
