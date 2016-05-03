@@ -39,14 +39,13 @@ class Model {
         $query = "UPDATE znaczniki SET
                        `latitude` = '{$marker->latitude}',
                        `longitude` = '{$marker->longitude}',
-                       `aktywny` = '{$marker->aktywny}',
+                       `opis` = '{$marker->opis}'
                   WHERE `nazwa` = '{$marker->nazwa}'";
         DBHelper::handle()->executeQuery($query);
         return 'edytowano znacznik';
     }
 
     public function addMarker ($marker) {
-
         $query = "INSERT INTO znaczniki (`nazwa`, `latitude`, `longitude`, `opis`,`data_utworzenia`, `aktywny`, `usuniety`,
                     `data_usuniecia`, `id_wlasciciela`)
                   VALUES ('{$marker->nazwa}', '{$marker->latitude}', '{$marker->longitude}', '{$marker->opis}', '{$marker->data_utworzenia}',
@@ -60,8 +59,9 @@ class Model {
     public function removeMarker($marker_name) {
         $query = "UPDATE znaczniki SET
                        `usuniety` = 1,
-                       `data_usuniecia` = " + date("Y-m-d H:i:s")
-            + "WHERE `nazwa` = '{$marker_name}'";
+                       `aktywny` = 0,
+                       `data_usuniecia` = '" . date("Y-m-d H:i:s")
+            . "' WHERE `nazwa` = '{$marker_name}'";
         DBHelper::handle()->executeQuery($query);
         return 'usunieto znacznik';
     }

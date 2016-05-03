@@ -78,8 +78,15 @@ Class Controller {
         if(empty($this->data)) return 'blad przekazanych danych znacznika';
 
         $marker = $this->data;
-        $marker = json_decode($marker);
         $this->model->updateMarker($marker);
         return 'zaktualizowano dane znacznika!';
+    }
+
+    public function removeMarker() {
+        if(empty($this->data)) return 'blad przekazanych danych znacznika';
+
+        $marker = $this->data->nazwa;
+        $this->model->removeMarker($marker);
+        return 'usunięto znacznik!';
     }
 }
