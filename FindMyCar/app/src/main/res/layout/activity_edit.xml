@@ -51,7 +51,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="3"
                 android:layout_height="wrap_content"
-                android:id="@+id/marker_title_edit" />
+                android:id="@+id/marker_title_edit"
+                android:editable="false"/>
             />
         </TableRow>
         <TableRow

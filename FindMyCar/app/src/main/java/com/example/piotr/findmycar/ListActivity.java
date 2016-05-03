@@ -123,8 +123,6 @@ public class ListActivity extends Activity {
                     builder.setPositiveButton(R.string.ok, null);
                     builder.show();
                 }
-
-
                 break;
             case R.id.delete_btn:
                 if (isConnected()) {
@@ -135,6 +133,7 @@ public class ListActivity extends Activity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             listAdapter.remove(Integer.parseInt(String.valueOf(titulo)));
+                            adapter.notifyDataSetChanged();
                             JSONObject toSend = new JSONObject();
                             try {
                                 toSend.put("action", "removeMarker");
@@ -213,13 +212,38 @@ public class ListActivity extends Activity {
                 }
                 break;
             case R.id.get_marker_info:
-                Bundle put2 = new Bundle();
-                put2.putString("name", name_item);
-                Intent iii = new Intent(getApplicationContext(), MarkerInfo.class);
-                iii.putExtras(put2);
                 if (isConnected()) {
-                    startActivity(iii);
-                    mp2.start();
+                    JSONObject toSend = new JSONObject();
+                    try {
+                        toSend.put("action", "getAllMarkers");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+                            try {
+                                Bundle put2 = new Bundle();
+                                JSONArray pages = new JSONArray(output);
+                                for (int i = 0; i < pages.length(); ++i) {
+                                    JSONObject rec = pages.getJSONObject(i);
+                                    String name_task = rec.getString("nazwa");
+                                    String latitude = rec.getString("latitude");
+                                    String longituide = rec.getString("longitude");
+                                    if (name_task.equals(name_item)) {
+                                        put2.putString("lat", latitude);
+                                        put2.putString("long", longituide);
+                                    }
+                                }
+                                put2.putString("name", name_item);
+                                Intent iii = new Intent(getApplicationContext(), MarkerInfo.class);
+                                iii.putExtras(put2);
+                                startActivity(iii);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).execute(toSend);
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
                     builder.setTitle(R.string.no_internet);
@@ -227,7 +251,6 @@ public class ListActivity extends Activity {
                     builder.setPositiveButton(R.string.ok, null);
                     builder.show();
                 }
-
             default:
                 return super.onContextItemSelected(item);
         }
