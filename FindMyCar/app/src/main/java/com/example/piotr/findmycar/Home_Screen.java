@@ -106,7 +106,8 @@ public class Home_Screen extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent i = new Intent(getApplicationContext(), Settings.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

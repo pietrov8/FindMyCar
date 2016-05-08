@@ -53,7 +53,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:background="#FFFFFF"
-                android:text="Large Text" />
+                android:text="Dane znacznika" />
         </TableRow>
         <TableRow>
             <TextView
@@ -62,7 +62,16 @@
                 android:layout_height="match_parent"
                 android:layout_above="@+id/cameraTextView"
                 android:background="#FFFFFF"
-                android:text="Large Text" />
+                android:text="Moja lokalizacja" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/cameraDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/cameraTextView"
+                android:background="#FFFFFF"
+                android:text="Distance" />
         </TableRow>
     </TableLayout>
 </RelativeLayout>

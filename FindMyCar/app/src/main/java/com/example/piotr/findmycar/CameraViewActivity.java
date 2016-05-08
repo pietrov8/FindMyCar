@@ -27,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +52,7 @@ public class CameraViewActivity extends Activity implements
 
 	TextView descriptionTextView;
 	TextView descriptionTextView2;
+	TextView cameraDistance;
 	ImageView pointerIcon;
 	ImageView arrowLeftIcon;
 	ImageView arrowRightIcon;
@@ -96,7 +98,7 @@ public class CameraViewActivity extends Activity implements
 						String coordinates_title = String.valueOf(R.string.marker_coordinates);
 						String description_title = String.valueOf(R.string.marker_description);
 						if (name_task.equals(name_item)) {
-							descriptionTextView.setText(name_item + " " + latitude +", "+ longituide + "\n" + description);
+							descriptionTextView.setText(name_item + "\n" + description);
 							mPoi = new AugmentedPOI(
 									name_item,
 									description,
@@ -176,7 +178,7 @@ public class CameraViewActivity extends Activity implements
 		loc1.setLatitude(mMyLatitude);
 		loc1.setLongitude(mMyLongitude);
 
-		descriptionTextView2.setText("Twoja lokalizajca: " + mMyLatitude+","+mMyLongitude);
+		descriptionTextView2.setText("Twoja lokalizajca: " + mMyLatitude+", "+mMyLongitude);
 
 		Bundle bundle_list = getIntent().getExtras();
 		final double longitiude = Double.parseDouble(bundle_list.getString("long"));
@@ -185,6 +187,13 @@ public class CameraViewActivity extends Activity implements
 		Location loc2 = new Location("B");
 		loc2.setLatitude(latitiude);
 		loc2.setLongitude(longitiude);
+
+		float distanceInMeters = loc1.distanceTo(loc2);
+		DecimalFormat df = new DecimalFormat("#.#");
+		String dx = df.format(distanceInMeters);
+
+		cameraDistance.setText("Odległość do znacznika: " + dx + " m");
+
 
 		float bearing = loc1.bearingTo(loc2);
 		bearing = normalizeDegree(bearing);
@@ -260,6 +269,7 @@ public class CameraViewActivity extends Activity implements
 	private void setupLayout() {
 		descriptionTextView = (TextView) findViewById(R.id.cameraTextView);
 		descriptionTextView2 = (TextView) findViewById(R.id.cameraTextView2);
+		cameraDistance = (TextView) findViewById(R.id.cameraDistance);
 
 		getWindow().setFormat(PixelFormat.UNKNOWN);
 		SurfaceView surfaceView = (SurfaceView) findViewById(R.id.cameraview);

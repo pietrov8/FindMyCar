@@ -2,7 +2,7 @@
     <string name="app_name">FindMyCar</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Ustawienia</string>
     <string name="title_activity_camera">Camera</string>
     <string name="title_activity_camera_view">CameraView</string>
     <string name="title_activity_camera_lunch">CameraLunch</string>
@@ -55,4 +55,11 @@
     <string name="no_internet_information_info_markers">Aby wyświetlić listę szczegóły znacznika aplikacja potrzebuje dostępu do internetu</string>
     <string name="no_internet_information_edit_markers">Aby zedytować znacznik aplikacja potrzebuje dostępu do internetu</string>
     <string name="ok">Ok</string>
+    <string name="address_ftp_file">Podaj adres pliku main.php</string>
+    <string name="language_select">Wybierz język</string>
+    <string name="test_connection">Przetestuj połączenie</string>
+    <string name="test_connection_ftp">Przetestuj połączenie z plikiem</string>
+    <string name="save_changes">Zapisz zmiany</string>
+    <string name="nosave_changes">Nie zapisuj zmian</string>
+    <string name="components_check">Sprawdź wymagania aplikacji</string>
 </resources>

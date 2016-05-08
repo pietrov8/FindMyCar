@@ -24,7 +24,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBWcyJbFNBB08bM0NQS1UwHEb371rtYsPY"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBWcyJbFNBB08bM0NQS1UwHEb371rtYsPY" />
+
         <activity
             android:name=".Home_Screen"
             android:label="@string/app_name">
@@ -52,7 +55,8 @@
         <activity android:name=".AddActivity" />
         <activity android:name=".EditActivity" />
         <activity android:name=".ListActivity" />
-        <activity android:name=".MarkerInfo"></activity>
+        <activity android:name=".MarkerInfo" />
+        <activity android:name=".Settings"></activity>
     </application>
 
 </manifest>
