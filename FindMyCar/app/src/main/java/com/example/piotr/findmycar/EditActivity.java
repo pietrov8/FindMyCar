@@ -5,13 +5,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,6 +60,10 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
             e.printStackTrace();
         }
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String address = preferences.getString("address","");
+        System.out.println(address);
+        if(!address.equalsIgnoreCase("")) {
         JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
             @Override
             public void processFinish(String output) {
@@ -79,7 +86,10 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
                     e.printStackTrace();
                 }
             }
-        }).execute(toSend);
+        }).execute(toSend,address);
+        } else {
+            Toast.makeText(EditActivity.this, "Ustaw poprawny adres w ustawieniach aplikacji", Toast.LENGTH_LONG).show();
+        }
 
         change_marker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,13 +155,19 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
                         e.printStackTrace();
                     }
                     System.out.println(toSend2);
-
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    String address = preferences.getString("address","");
+                    System.out.println(address);
+                    if(!address.equalsIgnoreCase("")) {
                     JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
                         @Override
                         public void processFinish(String output) {
                             System.out.println(output);
                         }
-                    }).execute(toSend2);
+                    }).execute(toSend2,address);
+                    } else {
+                        Toast.makeText(EditActivity.this, "Ustaw poprawny adres w ustawieniach aplikacji", Toast.LENGTH_LONG).show();
+                    }
 
                     Intent i = new Intent(getApplicationContext(), ListActivity.class);
                     finish();

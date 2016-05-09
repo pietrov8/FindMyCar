@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
@@ -16,11 +17,13 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,42 +85,47 @@ public class CameraViewActivity extends Activity implements
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
-		JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
-			@Override
-			public void processFinish(String output) {
-				try {
-					JSONArray pages     =  new JSONArray(output);
-					for (int i = 0; i < pages.length(); ++i) {
-						JSONObject rec = pages.getJSONObject(i);
-						String name_task = rec.getString("nazwa");
-						double latitude = Double.parseDouble(rec.getString("latitude"));
-						double longituide = Double.parseDouble(rec.getString("longitude"));
-						String description = rec.getString("opis");
-						String name_item_title = String.valueOf(R.string.marker_title);
-						String coordinates_title = String.valueOf(R.string.marker_coordinates);
-						String description_title = String.valueOf(R.string.marker_description);
-						if (name_task.equals(name_item)) {
-							descriptionTextView.setText(name_item + "\n" + description);
-							mPoi = new AugmentedPOI(
-									name_item,
-									description,
-									latitude,longituide
-							);
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		String address = preferences.getString("address","");
+		if(!address.equalsIgnoreCase("")) {
+			JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
+				@Override
+				public void processFinish(String output) {
+					try {
+						JSONArray pages = new JSONArray(output);
+						for (int i = 0; i < pages.length(); ++i) {
+							JSONObject rec = pages.getJSONObject(i);
+							String name_task = rec.getString("nazwa");
+							double latitude = Double.parseDouble(rec.getString("latitude"));
+							double longituide = Double.parseDouble(rec.getString("longitude"));
+							String description = rec.getString("opis");
+							String name_item_title = String.valueOf(R.string.marker_title);
+							String coordinates_title = String.valueOf(R.string.marker_coordinates);
+							String description_title = String.valueOf(R.string.marker_description);
+							if (name_task.equals(name_item)) {
+								descriptionTextView.setText(name_item + "\n" + description);
+								mPoi = new AugmentedPOI(
+										name_item,
+										description,
+										latitude, longituide
+								);
+							}
 						}
+					} catch (JSONException e) {
+						e.printStackTrace();
 					}
-				} catch (JSONException e) {
-					e.printStackTrace();
 				}
-			}
-		}).execute(toSend);
+			}).execute(toSend,address);
+		} else {
+			Toast.makeText(this, "Ustaw poprawny adres w ustawieniach aplikacji", Toast.LENGTH_LONG).show();
+		}
 
 		// initialize your android device sensor capabilities
 		mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
 		/*** CHECK GPS ***/
 		final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
-		if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER )) {
+		if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 			buildAlertMessageNoGps();
 		}
 

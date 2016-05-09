@@ -1,11 +1,14 @@
 package com.example.piotr.findmycar;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -54,32 +57,38 @@ public class MarkerInfo extends FragmentActivity implements OnMapReadyCallback {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
-            @Override
-            public void processFinish(String output) {
-                try {
-                    JSONArray pages = new JSONArray(output);
-                    for (int i = 0; i < pages.length(); ++i) {
-                        JSONObject rec = pages.getJSONObject(i);
-                        String name_task = rec.getString("nazwa");
-                        String latitude = rec.getString("latitude");
-                        String longituide = rec.getString("longitude");
-                        String description = rec.getString("opis");
-                        String date_create = rec.getString("data_utworzenia");
-                        if (name_task.equals(name_item)) {
-                            marker_title.setText(name_task);
-                            marker_cor_lat.setText(latitude);
-                            marker_cor_long.setText(longituide);
-                            marker_description.setText(description);
-                            marker_date_create.setText(date_create);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String address = preferences.getString("address","");
+        System.out.println(address);
+        if(!address.equalsIgnoreCase("")) {
+            JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
+                @Override
+                public void processFinish(String output) {
+                    try {
+                        JSONArray pages = new JSONArray(output);
+                        for (int i = 0; i < pages.length(); ++i) {
+                            JSONObject rec = pages.getJSONObject(i);
+                            String name_task = rec.getString("nazwa");
+                            String latitude = rec.getString("latitude");
+                            String longituide = rec.getString("longitude");
+                            String description = rec.getString("opis");
+                            String date_create = rec.getString("data_utworzenia");
+                            if (name_task.equals(name_item)) {
+                                marker_title.setText(name_task);
+                                marker_cor_lat.setText(latitude);
+                                marker_cor_long.setText(longituide);
+                                marker_description.setText(description);
+                                marker_date_create.setText(date_create);
+                            }
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }
-        }).execute(toSend);
+            }).execute(toSend,address);
+        } else {
+            Toast.makeText(this, "Ustaw poprawny adres w ustawieniach aplikacji", Toast.LENGTH_LONG).show();
+        }
 
 
         marker_select.setOnClickListener(new View.OnClickListener() {

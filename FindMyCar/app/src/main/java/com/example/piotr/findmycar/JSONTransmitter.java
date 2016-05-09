@@ -13,7 +13,7 @@ import org.json.JSONObject;
 /**
  * Created by piotr on 2016-04-18.
  */
-public class JSONTransmitter extends AsyncTask<JSONObject, JSONObject, String> {
+public class JSONTransmitter extends AsyncTask<Object, JSONObject, String> {
 
     public interface AsyncResponse {
         void processFinish(String output);
@@ -23,13 +23,11 @@ public class JSONTransmitter extends AsyncTask<JSONObject, JSONObject, String> {
 
     public JSONTransmitter(AsyncResponse delegate){
         this.delegate = delegate;
-    }
-
-    String url = "http://piotr-m.pl/fmc/main.php";
-
+    };
     @Override
-    protected String doInBackground(JSONObject... data) {
-        JSONObject json = data[0];
+    protected String doInBackground(Object... data) {
+        JSONObject json = (JSONObject) data[0];
+        String url = (String) data[1];
         HttpClient client = new DefaultHttpClient();
         HttpConnectionParams.setConnectionTimeout(client.getParams(), 100000);
 

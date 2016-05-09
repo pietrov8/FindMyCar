@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -40,22 +42,29 @@ public class ListActivity extends Activity {
             e.printStackTrace();
         }
 
-        JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
-            @Override
-            public void processFinish(String output) {
-                try {
-                    JSONArray pages = new JSONArray(output);
-                    for (int i = 0; i < pages.length(); ++i) {
-                        JSONObject rec = pages.getJSONObject(i);
-                        String name_task = rec.getString("nazwa");
-                        listAdapter.add(name_task);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String address = preferences.getString("address","");
+        if(!address.equalsIgnoreCase(""))
+        {
+            JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
+                @Override
+                public void processFinish(String output) {
+                    try {
+                        JSONArray pages = new JSONArray(output);
+                        for (int i = 0; i < pages.length(); ++i) {
+                            JSONObject rec = pages.getJSONObject(i);
+                            String name_task = rec.getString("nazwa");
+                            listAdapter.add(name_task);
+                        }
+                        adapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    adapter.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }
-        }).execute(toSend);
+            }).execute(toSend,address);
+        } else {
+            Toast.makeText(this, "Ustaw poprawny adres w ustawieniach aplikacji", Toast.LENGTH_LONG).show();
+        }
 
         adapter = new MyCustomAdapter(listAdapter, this);
 
@@ -141,12 +150,18 @@ public class ListActivity extends Activity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
-                                @Override
-                                public void processFinish(String output) {
-                                    System.out.println(output);
-                                }
-                            }).execute(toSend);
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                            String address = preferences.getString("address","");
+                            if(!address.equalsIgnoreCase("")) {
+                                JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
+                                    @Override
+                                    public void processFinish(String output) {
+                                        System.out.println(output);
+                                    }
+                                }).execute(toSend, address);
+                            } else {
+                                Toast.makeText(ListActivity.this, "Ustaw poprawny adres w ustawieniach aplikacji", Toast.LENGTH_LONG).show();
+                            }
                             showToast();
                             mp.start();
                         }
@@ -176,31 +191,37 @@ public class ListActivity extends Activity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
-                        @Override
-                        public void processFinish(String output) {
-                            try {
-                                Bundle put_to_camera = new Bundle();
-                                JSONArray pages = new JSONArray(output);
-                                for (int i = 0; i < pages.length(); ++i) {
-                                    JSONObject rec = pages.getJSONObject(i);
-                                    String name_task = rec.getString("nazwa");
-                                    String latitude = rec.getString("latitude");
-                                    String longituide = rec.getString("longitude");
-                                    if (name_task.equals(name_item)) {
-                                        put_to_camera.putString("lat", latitude);
-                                        put_to_camera.putString("long", longituide);
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                    String address = preferences.getString("address","");
+                    if(!address.equalsIgnoreCase("")) {
+                        JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
+                            @Override
+                            public void processFinish(String output) {
+                                try {
+                                    Bundle put_to_camera = new Bundle();
+                                    JSONArray pages = new JSONArray(output);
+                                    for (int i = 0; i < pages.length(); ++i) {
+                                        JSONObject rec = pages.getJSONObject(i);
+                                        String name_task = rec.getString("nazwa");
+                                        String latitude = rec.getString("latitude");
+                                        String longituide = rec.getString("longitude");
+                                        if (name_task.equals(name_item)) {
+                                            put_to_camera.putString("lat", latitude);
+                                            put_to_camera.putString("long", longituide);
+                                        }
                                     }
+                                    put_to_camera.putString("name", name_item);
+                                    Intent ii = new Intent(getApplicationContext(), CameraViewActivity.class);
+                                    ii.putExtras(put_to_camera);
+                                    startActivity(ii);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                                put_to_camera.putString("name", name_item);
-                                Intent ii = new Intent(getApplicationContext(), CameraViewActivity.class);
-                                ii.putExtras(put_to_camera);
-                                startActivity(ii);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-                        }
-                    }).execute(toSend);
+                        }).execute(toSend,address);
+                    } else {
+                        Toast.makeText(ListActivity.this, "Ustaw poprawny adres w ustawieniach aplikacji", Toast.LENGTH_LONG).show();
+                    }
 
                     mp2.start();
                 }else {
@@ -219,31 +240,37 @@ public class ListActivity extends Activity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
-                        @Override
-                        public void processFinish(String output) {
-                            try {
-                                Bundle put2 = new Bundle();
-                                JSONArray pages = new JSONArray(output);
-                                for (int i = 0; i < pages.length(); ++i) {
-                                    JSONObject rec = pages.getJSONObject(i);
-                                    String name_task = rec.getString("nazwa");
-                                    String latitude = rec.getString("latitude");
-                                    String longituide = rec.getString("longitude");
-                                    if (name_task.equals(name_item)) {
-                                        put2.putString("lat", latitude);
-                                        put2.putString("long", longituide);
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                    String address = preferences.getString("address","");
+                    if(!address.equalsIgnoreCase("")) {
+                        JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
+                            @Override
+                            public void processFinish(String output) {
+                                try {
+                                    Bundle put2 = new Bundle();
+                                    JSONArray pages = new JSONArray(output);
+                                    for (int i = 0; i < pages.length(); ++i) {
+                                        JSONObject rec = pages.getJSONObject(i);
+                                        String name_task = rec.getString("nazwa");
+                                        String latitude = rec.getString("latitude");
+                                        String longituide = rec.getString("longitude");
+                                        if (name_task.equals(name_item)) {
+                                            put2.putString("lat", latitude);
+                                            put2.putString("long", longituide);
+                                        }
                                     }
+                                    put2.putString("name", name_item);
+                                    Intent iii = new Intent(getApplicationContext(), MarkerInfo.class);
+                                    iii.putExtras(put2);
+                                    startActivity(iii);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                                put2.putString("name", name_item);
-                                Intent iii = new Intent(getApplicationContext(), MarkerInfo.class);
-                                iii.putExtras(put2);
-                                startActivity(iii);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-                        }
-                    }).execute(toSend);
+                        }).execute(toSend,address);
+                    } else {
+                        Toast.makeText(ListActivity.this, "Ustaw poprawny adres w ustawieniach aplikacji", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
                     builder.setTitle(R.string.no_internet);
