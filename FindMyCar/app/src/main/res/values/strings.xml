@@ -23,6 +23,7 @@
     <string name="list_marker">Lista znaczników</string>
     <string name="close_text">Zamknij aplikację</string>
     <string name="delete_text">Usuń</string>
+    <string name="delete_text_marker">Usuń ten znacznik</string>
     <string name="edit_text">Edytuj</string>
     <string name="select_text">Wybierz</string>
     <string name="delete_marker">Usunięto znacznik</string>
@@ -62,4 +63,7 @@
     <string name="save_changes">Zapisz zmiany</string>
     <string name="nosave_changes">Nie zapisuj zmian</string>
     <string name="components_check">Sprawdź wymagania aplikacji</string>
+    <string name="finish_title">Dotarłeś do celu</string>
+    <string name="back_home">Powrót do menu</string>
+    <string name="finist_text">Właśnie dotarłeś do wybranego celu. Poniżej znajdują się przyciski dzięki którym łatwo możesz zakończyć proces doprowadzenia do celu. Miłej podróży</string>
 </resources>

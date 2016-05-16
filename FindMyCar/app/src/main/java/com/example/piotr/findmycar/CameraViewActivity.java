@@ -203,6 +203,21 @@ public class CameraViewActivity extends Activity implements
 		cameraDistance.setText("Odległość do znacznika: " + dx + " m");
 
 
+		bundle_list = getIntent().getExtras();
+		final String name_item = bundle_list.getString("name");
+		System.out.println(name_item);
+
+		if (5 > distanceInMeters) {
+			Bundle put = new Bundle();
+			put.putString("name", name_item);
+			Intent i = new Intent(getApplicationContext(), FinishActivity.class);
+			i.putExtras(put);
+			startActivity(i);
+
+			finish();
+		}
+
+
 		float bearing = loc1.bearingTo(loc2);
 		bearing = normalizeDegree(bearing);
 

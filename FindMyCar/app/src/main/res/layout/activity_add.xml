@@ -126,13 +126,6 @@
                 android:id="@+id/add_marker"
                 android:layout_width="0dp"
                 android:layout_weight="1"/>
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_height="wrap_content"
-                android:text="@string/AddAcivity_add_marker_false"
-                android:id="@+id/add_marker_false"
-                android:layout_width="0dp"
-                android:layout_weight="1"/>
         </TableRow>
     </TableLayout>
 

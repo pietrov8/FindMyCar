@@ -28,6 +28,9 @@ public class Home_Screen extends ActionBarActivity {
         Button btnEditMarker = (Button) findViewById(R.id.btn_edit_marker);
         Button btnListMarker = (Button) findViewById(R.id.btn_list_marker);
 
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+        }
         btnAddMarker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

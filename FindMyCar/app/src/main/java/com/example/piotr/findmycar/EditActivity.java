@@ -30,6 +30,7 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
     double mMyLongitude = 0;
     Button update_coordinates;
     Button change_marker;
+    Button change_marker_false;
     EditText marker_title;
     TextView marker_lat;
     TextView marker_long;
@@ -52,6 +53,7 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
         descriptionTextView = (EditText)findViewById(R.id.marker_title_text_edit);
         update_coordinates = (Button)findViewById(R.id.update_coordinates);
         change_marker = (Button)findViewById(R.id.change_marker);
+        change_marker_false = (Button)findViewById(R.id.add_marker_false_edit);
 
         JSONObject toSend = new JSONObject();
         try {
@@ -121,7 +123,7 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
                     String message_validation1="";
                     String message_validation2="";
                     String message_validation3="";
-                    if (error > 0) {
+                    if (error1 > 0) {
                         message_validation1 = getString(R.string.validation_title);
                     }
                     if (error2 > 0) {
@@ -173,6 +175,15 @@ public class EditActivity extends Activity implements OnLocationChangedListener 
                     finish();
                     startActivity(i);
                 }
+            }
+        });
+
+        change_marker_false.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), ListActivity.class);
+                finish();
+                startActivity(i);
             }
         });
 

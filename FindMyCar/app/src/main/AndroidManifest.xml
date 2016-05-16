@@ -56,7 +56,8 @@
         <activity android:name=".EditActivity" />
         <activity android:name=".ListActivity" />
         <activity android:name=".MarkerInfo" />
-        <activity android:name=".Settings"></activity>
+        <activity android:name=".Settings" />
+        <activity android:name=".FinishActivity"></activity>
     </application>
 
 </manifest>

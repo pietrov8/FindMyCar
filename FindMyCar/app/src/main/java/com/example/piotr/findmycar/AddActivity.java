@@ -77,6 +77,7 @@ public class AddActivity extends Activity implements OnLocationChangedListener {
                 }
 
                 error = error1 + error2 + error3;
+
                 if (isConnected()){
                     if (error > 0) {
                         final AlertDialog.Builder builder = new AlertDialog.Builder(AddActivity.this);
@@ -84,7 +85,7 @@ public class AddActivity extends Activity implements OnLocationChangedListener {
                         String message_validation1="";
                         String message_validation2="";
                         String message_validation3="";
-                        if (error > 0) {
+                        if (error1 > 0) {
                             message_validation1 = getString(R.string.validation_title);
                         }
                         if (error2 > 0) {
@@ -93,6 +94,7 @@ public class AddActivity extends Activity implements OnLocationChangedListener {
                         if (error3 > 0) {
                             message_validation3 = getString(R.string.validation_description);
                         }
+
                         message_validation = message_validation1 +"\n" + message_validation2 + "\n" + message_validation3;
                         builder.setMessage(message_validation);
                         builder.setPositiveButton(R.string.correct_text, null);

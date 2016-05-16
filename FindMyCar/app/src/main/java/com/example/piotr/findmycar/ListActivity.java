@@ -123,6 +123,7 @@ public class ListActivity extends Activity {
                 Intent i = new Intent(getApplicationContext(), EditActivity.class);
                 i.putExtras(put);
                 if (isConnected()) {
+                    finish();
                     startActivity(i);
                     mp2.start();
                 } else {
@@ -213,6 +214,7 @@ public class ListActivity extends Activity {
                                     put_to_camera.putString("name", name_item);
                                     Intent ii = new Intent(getApplicationContext(), CameraViewActivity.class);
                                     ii.putExtras(put_to_camera);
+                                    finish();
                                     startActivity(ii);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
