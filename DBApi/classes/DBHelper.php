@@ -6,6 +6,7 @@
  * Time: 10:26
  */
 
+require_once('./config.php');
 class DBHelper {
 
     /**
@@ -20,7 +21,7 @@ class DBHelper {
 
     private function __construct(){
         try {
-            self::$db = new PDO('mysql:host=localhost;dbname=piotrmp1_findmycar', 'piotrmp1_fmc', 'findmycar');
+            self::$db = new PDO('mysql:host='. DB_HOST .';dbname=' . DB_NAME, DB_USER, DB_PASSWORD);
 //            self::$db = new PDO('mysql:host=localhost;dbname=FMC', 'root', '');
             self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch(PDOException $e) {

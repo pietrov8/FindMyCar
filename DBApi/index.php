@@ -8,7 +8,6 @@
 
 <?php require_once('./main.php'); ?>
 
-
 <div>
     <h1>Header</h1>
     <span><?php print_r($a); ?></span>
