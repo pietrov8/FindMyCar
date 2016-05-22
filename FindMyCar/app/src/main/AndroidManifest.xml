@@ -38,14 +38,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Camera"
-            android:label="@string/title_activity_camera" />
-        <activity
-            android:name=".CameraView"
-            android:label="@string/title_activity_camera_view" />
-        <activity
             android:name=".CameraViewActivity"
-            android:label="@string/title_activity_camera_view">
+            android:label="@string/title_activity_camera_view"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

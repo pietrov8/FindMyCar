@@ -291,4 +291,9 @@ public class ListActivity extends Activity {
     public void showToast2(){
         Toast.makeText(this, R.string.delete_marker_error, Toast.LENGTH_SHORT).show();
     }
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), Home_Screen.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 }

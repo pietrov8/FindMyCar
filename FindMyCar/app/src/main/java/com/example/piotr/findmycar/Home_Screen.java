@@ -59,6 +59,8 @@ public class Home_Screen extends ActionBarActivity {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                finish();
                 System.exit(0);
             }
         });

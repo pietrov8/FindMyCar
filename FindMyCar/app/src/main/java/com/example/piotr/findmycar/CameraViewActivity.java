@@ -205,12 +205,12 @@ public class CameraViewActivity extends Activity implements
 
 		bundle_list = getIntent().getExtras();
 		final String name_item = bundle_list.getString("name");
-		System.out.println(name_item);
 
 		if (5 > distanceInMeters) {
 			Bundle put = new Bundle();
 			put.putString("name", name_item);
 			Intent i = new Intent(getApplicationContext(), FinishActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			i.putExtras(put);
 			startActivity(i);
 

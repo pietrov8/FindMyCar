@@ -36,9 +36,11 @@ public class FinishActivity extends Activity {
         back_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
                 Intent i = new Intent(getApplicationContext(), Home_Screen.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                finish();
                 startActivity(i);
+
             }
         });
 
@@ -47,9 +49,10 @@ public class FinishActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Home_Screen.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("EXIT", true);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -84,7 +87,9 @@ public class FinishActivity extends Activity {
                             }
                             showToast();
                             Intent i = new Intent(getApplicationContext(), ListActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
+                            finish();
                         }
                     });
                     alert.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
