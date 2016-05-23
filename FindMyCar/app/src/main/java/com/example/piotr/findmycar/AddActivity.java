@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -85,17 +86,18 @@ public class AddActivity extends Activity implements OnLocationChangedListener {
                         String message_validation1="";
                         String message_validation2="";
                         String message_validation3="";
+
                         if (error1 > 0) {
-                            message_validation1 = getString(R.string.validation_title);
+                            message_validation1 = getString(R.string.validation_title) + "\n";
                         }
                         if (error2 > 0) {
-                            message_validation2 = getString(R.string.validation_coordinates);
+                            message_validation2 = getString(R.string.validation_coordinates) + "\n";
                         }
                         if (error3 > 0) {
-                            message_validation3 = getString(R.string.validation_description);
+                            message_validation3 = getString(R.string.validation_description) + "\n";
                         }
 
-                        message_validation = message_validation1 +"\n" + message_validation2 + "\n" + message_validation3;
+                        message_validation = message_validation1 + message_validation2 + message_validation3;
                         builder.setMessage(message_validation);
                         builder.setPositiveButton(R.string.correct_text, null);
                         builder.setTitle(R.string.validation_error);
@@ -105,39 +107,76 @@ public class AddActivity extends Activity implements OnLocationChangedListener {
                         alert.show();
                     } else {
 
-                        JSONObject toSend = new JSONObject();
+                        //*** WALIDACJA NAZWY ZNACZNIKA ***//
+                        JSONObject toSend2 = new JSONObject();
                         try {
-                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            //get current date time with Date()
-                            Date date = new Date();
-                            toSend.put("action", "addMarker");
-                            toSend.put("nazwa", marker_title_val);
-                            toSend.put("latitude", marker_lat_val);
-                            toSend.put("longitude", marker_long_val);
-                            toSend.put("opis", descriptionTextView_val);
-                            toSend.put("data_utworzenia", dateFormat.format(date));
-
+                            toSend2.put("action", "getAllMarkers");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        System.out.println(toSend);
-                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                        String address = preferences.getString("address","");
-                        if(!address.equalsIgnoreCase(""))
-                        {
+                        SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(AddActivity.this);
+                        String address1 = preferences1.getString("address","");
+                        if(!address1.equalsIgnoreCase("")) {
                             JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
                                 @Override
                                 public void processFinish(String output) {
-                                    System.out.println(output);
+                                    try {
+                                        int errortitle = 0;
+                                        JSONArray pages = new JSONArray(output);
+                                        for (int i = 0; i < pages.length(); ++i) {
+                                            JSONObject rec = pages.getJSONObject(i);
+                                            String name_task = rec.getString("nazwa");
+                                            if (name_task.equals(marker_title_val)) {
+                                                errortitle = 1;
+                                            }
+                                        }
+                                        if (errortitle == 1) {
+                                            Toast.makeText(AddActivity.this, "Podaj unikalną nazwę znacznika", Toast.LENGTH_LONG).show();
+                                        } else {
+                                            JSONObject toSend = new JSONObject();
+                                            try {
+                                                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                                //get current date time with Date()
+                                                Date date = new Date();
+                                                toSend.put("action", "addMarker");
+                                                toSend.put("nazwa", marker_title_val);
+                                                toSend.put("latitude", marker_lat_val);
+                                                toSend.put("longitude", marker_long_val);
+                                                toSend.put("opis", descriptionTextView_val);
+                                                toSend.put("data_utworzenia", dateFormat.format(date));
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                            System.out.println(toSend);
+                                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                            String address = preferences.getString("address","");
+                                            if(!address.equalsIgnoreCase(""))
+                                            {
+                                                JSONTransmitter asyncTask = (JSONTransmitter) new JSONTransmitter(new JSONTransmitter.AsyncResponse() {
+                                                    @Override
+                                                    public void processFinish(String output) {
+                                                        System.out.println(output);
+                                                    }
+                                                }).execute(toSend,address);
+                                            } else {
+                                                Toast.makeText(AddActivity.this, "Ustaw poprawny adres w ustawieniach aplikacji", Toast.LENGTH_LONG).show();
+                                            }
+                                            Intent ii = new Intent(getApplicationContext(), ListActivity.class);
+                                            finish();
+                                            startActivity(ii);
+                                        }
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                        }).execute(toSend,address);
+                            }).execute(toSend2,address1);
                         } else {
                             Toast.makeText(AddActivity.this, "Ustaw poprawny adres w ustawieniach aplikacji", Toast.LENGTH_LONG).show();
                         }
 
-                        Intent i = new Intent(getApplicationContext(), ListActivity.class);
-                        finish();
-                        startActivity(i);
+
                     }} else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(AddActivity.this);
                         builder.setTitle(R.string.no_internet);
