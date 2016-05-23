@@ -66,5 +66,5 @@
     <string name="finish_title">Dotarłeś do celu</string>
     <string name="back_home">Powrót do menu</string>
     <string name="finist_text">Właśnie dotarłeś do wybranego celu. Poniżej znajdują się przyciski dzięki którym łatwo możesz zakończyć proces doprowadzenia do celu. Miłej podróży</string>
-    <string name="validation_title_equals">Podaj unikalną (niepowtarzającą się) nawzę</string>
+    <string name="validation_title_equals">Podaj unikalną (niepowtarzającą się) nazwę</string>
 </resources>

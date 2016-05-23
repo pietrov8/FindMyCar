@@ -131,7 +131,7 @@ public class AddActivity extends Activity implements OnLocationChangedListener {
                                             }
                                         }
                                         if (errortitle == 1) {
-                                            Toast.makeText(AddActivity.this, "Podaj unikalną nazwę znacznika", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(AddActivity.this, getString(R.string.validation_title_equals), Toast.LENGTH_LONG).show();
                                         } else {
                                             JSONObject toSend = new JSONObject();
                                             try {
